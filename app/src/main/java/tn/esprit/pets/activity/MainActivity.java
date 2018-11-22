@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,16 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +38,9 @@ import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 import tn.esprit.pets.R;
 import tn.esprit.pets.adapter.PostAdapter;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.User;
 import tn.esprit.pets.fragment.AddPostFragment;
+import tn.esprit.pets.service.UserService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +61,44 @@ public class MainActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
 
             initData();
+            /*String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JsonObjectRequest objectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    getAllURL,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("rest response", response.toString());
+                            System.out.println("json response " + response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("rest error", error.toString());
+                        }
+                    }
+            );
+            objectRequest.setRetryPolicy(new RetryPolicy() {
+                @Override
+                public int getCurrentTimeout() {
+                    return 50000;
+                }
+
+                @Override
+                public int getCurrentRetryCount() {
+                    return 50000;
+                }
+
+                @Override
+                public void retry(VolleyError error) throws VolleyError {
+
+                }
+            });
+            requestQueue.add(objectRequest);*/
+
             textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
             textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
                 @Override
@@ -108,7 +159,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initData() {
-        posts.add(new Post("this cat was last seen near walmart, minnesota", "https://www.petsafe.net/media/images/learn/spay-kittens-article-thumbnail.jpg"));
+        UserService us = new UserService();
+        us.getAllUsers(this);
+        //boolean ok = us.isAuthentified(this, "imen", "kooo");
+        posts.add(new Post("kiko", "https://www.petsafe.net/media/images/learn/spay-kittens-article-thumbnail.jpg"));
         posts.add(new Post("this cat is currently injured and hungry near cvs, huston texas", "https://i2.wp.com/consciouscat.net/wp-content/uploads/2014/10/catblog1-e1414762887270.png"));
         posts.add(new Post("this cat was found at bed, bath and beyond, boston", "https://www.cats.org.uk/uploads/branches/1/environment-faqs.jpg"));
         posts.add(new Post("9attous bahdha poubelle el khamja mta el cité", "https://www.aspcapetinsurance.com/media/1080/14.jpg?width=400&height=400"));

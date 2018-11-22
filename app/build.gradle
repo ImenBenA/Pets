@@ -30,4 +30,7 @@ dependencies {
 
     implementation 'com.github.moondroid.coverflow:library:1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.google.code.gson:gson:2.4'
 }

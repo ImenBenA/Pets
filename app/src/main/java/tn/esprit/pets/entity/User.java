@@ -1,6 +1,8 @@
 package tn.esprit.pets.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private int id;
     private String username;
@@ -10,6 +12,14 @@ public class User {
 
 
     public User(String username, String password, String email, String picture) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.picture = picture;
+    }
+
+    public User(int id, String username, String password, String email, String picture) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -53,5 +63,16 @@ public class User {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
     }
 }
