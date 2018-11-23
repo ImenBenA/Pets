@@ -55,7 +55,7 @@ public class AddPostFragment extends Fragment {
                 } else {
                     type = "looking for";
                 }*/
-                MainActivity.posts.add(new Post(description,imageUrl));
+                //MainActivity.posts.add(new Post(description,imageUrl));
             }
         });
         return root;

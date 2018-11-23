@@ -1,9 +1,12 @@
 package tn.esprit.pets.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -40,27 +45,32 @@ import tn.esprit.pets.adapter.PostAdapter;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.fragment.AddPostFragment;
+import tn.esprit.pets.fragment.HomeFragment;
+import tn.esprit.pets.fragment.LostFragment;
+import tn.esprit.pets.fragment.SignupFragment;
 import tn.esprit.pets.service.UserService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FeatureCoverFlow coverFlow;
+    /*private FeatureCoverFlow coverFlow;
     private PostAdapter postAdapter;
-    public static List<Post> posts = new ArrayList<>();
-    private TextSwitcher textSwitcher;
 
+    private TextSwitcher textSwitcher;*/
+    public static List<Post> posts = new ArrayList<>();
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    GridLayout mainGrid;
+    CardView lost, found, profile, settings, lostAndFound, messages;
+    Runnable runnable;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        boolean ok = true;
-
-        if (ok == true) {
-            setContentView(R.layout.activity_main);
-
-            initData();
+        setContentView(R.layout.activity_main);
+        getApplicationContext();
+        //initData();
             /*String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JsonObjectRequest objectRequest = new JsonObjectRequest(
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity
             });
             requestQueue.add(objectRequest);*/
 
-            textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
+            /*textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
             textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
                 @Override
                 public View makeView() {
@@ -127,46 +137,58 @@ public class MainActivity extends AppCompatActivity
                 public void onScrolling() {
 
                 }
-            });
+            });*/
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+        mainGrid = (GridLayout) findViewById(R.id.mainGrid);
+        //final CardView lost = (CardView) mainGrid.getChildAt(0);
+        lost = (CardView) findViewById(R.id.lost);
+        lost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();*/
-                    getSupportFragmentManager().beginTransaction().add(R.id.drawer_layout, new AddPostFragment()).commit();
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
                 }
-            });
+            }
+        });
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().add(R.id.drawer_layout, new AddPostFragment()).commit();
+            }
+        });
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-        }
-        else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void initData() {
         UserService us = new UserService();
         us.getAllUsers(this);
         //boolean ok = us.isAuthentified(this, "imen", "kooo");
-        posts.add(new Post("kiko", "https://www.petsafe.net/media/images/learn/spay-kittens-article-thumbnail.jpg"));
+        /*posts.add(new Post("kiko", "https://www.petsafe.net/media/images/learn/spay-kittens-article-thumbnail.jpg"));
         posts.add(new Post("this cat is currently injured and hungry near cvs, huston texas", "https://i2.wp.com/consciouscat.net/wp-content/uploads/2014/10/catblog1-e1414762887270.png"));
         posts.add(new Post("this cat was found at bed, bath and beyond, boston", "https://www.cats.org.uk/uploads/branches/1/environment-faqs.jpg"));
         posts.add(new Post("9attous bahdha poubelle el khamja mta el cité", "https://www.aspcapetinsurance.com/media/1080/14.jpg?width=400&height=400"));
         posts.add(new Post("9atous 7ay lkhadhra", "https://pbs.twimg.com/profile_images/930937305686298629/TcUPwLQE_400x400.jpg"));
+    */
     }
 
     @Override
@@ -209,6 +231,29 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            /*Runnable mPendingRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    // update the main content by replacing fragments
+                    android.support.v4.app.Fragment fragment = getHomeFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                            android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            };
+
+            // If mPendingRunnable is not null, then add to the message queue
+            if (mPendingRunnable != null) {
+                mHandler.post(mPendingRunnable);
+                sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("posActualites", -1);
+                editor.putInt("posCinema", -1);
+                editor.commit();
+            }*/
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

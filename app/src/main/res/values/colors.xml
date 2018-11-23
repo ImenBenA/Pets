@@ -9,4 +9,5 @@
     <color name="transparent">#00000000</color>
     <color name="gradStart">#3c89c3</color>
     <color name="gradStop">#46ADF2</color>
+    <color name="logoColor">#3c89c3</color>
 </resources>

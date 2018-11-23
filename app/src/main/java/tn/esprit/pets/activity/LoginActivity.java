@@ -1,6 +1,7 @@
 package tn.esprit.pets.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,12 +29,17 @@ import tn.esprit.pets.service.UserService;
 
 public class LoginActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     RelativeLayout relativeLayout1, relativeLayout2;
     Button login, signup;
+    boolean isConnected, isAuthentified;
     EditText username, password;
     private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
     UserService userService = new UserService();
 
+    Handler mHandler = new Handler();
+    Runnable mRunnable;
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -46,99 +52,65 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        sharedPreferences = this.getSharedPreferences("isConnect", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        isConnected = sharedPreferences.getBoolean("isConnect", false);
+        if(isConnected) {
+            startActivity(intent);
+        }
+        else {
+            setContentView(R.layout.activity_login);
+            relativeLayout1 = (RelativeLayout) findViewById(R.id.relative_layout1);
+            relativeLayout2 = (RelativeLayout) findViewById(R.id.relative_layout2);
+            username = (EditText) findViewById(R.id.username);
+            password = (EditText) findViewById(R.id.password);
+            login = (Button) findViewById(R.id.login);
+            signup = (Button) findViewById(R.id.signup);
 
-        relativeLayout1 = (RelativeLayout) findViewById(R.id.relative_layout1);
-        relativeLayout2 = (RelativeLayout) findViewById(R.id.relative_layout2);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        login = (Button) findViewById(R.id.login);
-        signup = (Button) findViewById(R.id.signup);
+            handler.postDelayed(runnable, 2000);
 
-
-
-        handler.postDelayed(runnable, 2000);
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String lusername = username.getText().toString();
-                final String lpassword = password.getText().toString();
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean ok = userService.isAuthentified(getApplicationContext(), lusername, lpassword);
-                        if (ok) {
-                            startActivity(intent);
-                            Log.e("is authentified", ok+"");
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final String lusername = username.getText().toString();
+                    final String lpassword = password.getText().toString();
+                    mRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            isAuthentified = userService.isAuthentified(getApplicationContext(), lusername, lpassword);
+                            if (isAuthentified) {
+                                isConnected = true;
+                                editor.putBoolean("isConnect", true);
+                                editor.commit();
+                                startActivity(intent);
+                                Log.e("is auth and is co", isAuthentified + " "+ isConnected + " ");
+                            }
+                            else {
+                                Log.e("is neither", isAuthentified +"");
+                            }
                         }
-                        else {
-                            Log.e("is authentified", ok+"");
-                        }
+                    };
+                    if (mRunnable != null) {
+                        mHandler.post(mRunnable);
                     }
-                };
-                runnable.run();
+                }
+            });
 
-
-
-                /*RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                // Initialize a new JsonArrayRequest instance
-                JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                        Request.Method.GET,
-                        getAllURL,
-                        null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                Log.e("json response", response.toString());
-
-                                try{
-                                    // Loop through the array elements
-                                    for(int i=0;i<response.length();i++){
-                                        // Get current json object
-                                        JSONObject jsonObject = response.getJSONObject(i);
-                                        // Get the current student (json object) data
-                                        String username = jsonObject.getString("username");
-                                        String password = jsonObject.getString("password");
-
-                                        // Display the formatted json data in text view
-                                        if (lusername.equalsIgnoreCase(username) && lpassword.equalsIgnoreCase(password)) {
-                                            startActivity(intent);
-                                            Log.e("Array taada", "ey");
-                                            break;
-                                        }
-
-                                    }
-                                }catch (JSONException e){
-                                    Log.e("Array exception", "mataadech");
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        },
-                        new Response.ErrorListener(){
-                            @Override
-                            public void onErrorResponse(VolleyError error){
-                                // Do something when error occurred
-                                Log.e("array error", error.toString());
-                            }
+            signup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            getSupportFragmentManager().beginTransaction().add(R.id.login_layout, new SignupFragment()).commit();
                         }
-                );
-
-                // Add JsonArrayRequest to the RequestQueue
-                requestQueue.add(jsonArrayRequest);*/
-            }
-        });
-
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().add(R.id.login_layout, new SignupFragment()).commit();
-            }
-        });
-
-
+                    };
+                    if (mRunnable != null) {
+                        mHandler.post(mRunnable);
+                    }
+                }
+            });
+        }
     }
 }
