@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                     mRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            getSupportFragmentManager().beginTransaction().add(R.id.login_layout, new SignupFragment()).commit();
+                            getSupportFragmentManager().beginTransaction().addToBackStack("fragment").add(R.id.login_layout, new SignupFragment()).commit();
                         }
                     };
                     if (mRunnable != null) {

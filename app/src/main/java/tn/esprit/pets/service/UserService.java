@@ -74,10 +74,10 @@ public class UserService {
                         // Process the JSON
                         Log.e("json response", response.toString());
 
-                        try{
+                        try {
                             // Loop through the array elements
                             List<User> users = new ArrayList<>();
-                            for(int i=0;i<response.length();i++){
+                            for (int i = 0; i < response.length(); i++) {
                                 // Get current json object
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 // Get the current student (json object) data
@@ -92,15 +92,15 @@ public class UserService {
                                 users.add(user);
                                 Log.e("Array response", users.toString());
                             }
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
                         // Do something when error occurred
                         Log.e("json error", error.toString());
                     }
@@ -128,9 +128,9 @@ public class UserService {
                         // Process the JSON
                         Log.e("json response", response.toString());
 
-                        try{
+                        try {
                             // Loop through the array elements
-                            for(int i=0;i<response.length();i++){
+                            for (int i = 0; i < response.length(); i++) {
                                 // Get current json object
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 // Get the current student (json object) data
@@ -140,19 +140,19 @@ public class UserService {
                                 // Display the formatted json data in text view
                                 if (lusername.equalsIgnoreCase(username) && lpassword.equalsIgnoreCase(password)) {
                                     ok = true;
-                                    Log.e("is authentified", ok+"");
+                                    Log.e("is authentified", ok + "");
                                     break;
                                 }
                             }
-                        }catch (JSONException e){
-                            Log.e("Array exception", ok+"");
+                        } catch (JSONException e) {
+                            Log.e("Array exception", ok + "");
                             e.printStackTrace();
                         }
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
                         // Do something when error occurred
                         Log.e("array error", error.toString());
                     }
@@ -161,5 +161,51 @@ public class UserService {
         // Add JsonArrayRequest to the RequestQueue
         requestQueue.add(jsonArrayRequest);
         return ok;
+    }
+
+    public void addUser(Context context, String username, String password, String email, String picture) {
+        // Initialize a new RequestQueue instance
+        String Url = "http://10.0.2.2:18080/WSPets-web/api/user/add/" + username + "/" + password + "/" + email + "/" + picture;
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                Url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Do something with response
+                        //mTextView.setText(response.toString());
+                        //List<User> users = new ArrayList<>();
+                        // Process the JSON
+                        Log.e("json response", response.toString());
+                        try {
+                            // Loop through the array elements
+                            for (int i = 0; i < response.length(); i++) {
+                                // Get current json object
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                // Get the current student (json object) data
+                                String lusername = jsonObject.getString("username");
+                                String lpassword = jsonObject.getString("password");
+
+                            }
+                        } catch (JSONException e) {
+                            Log.e("Array exception", ok + "");
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Do something when error occurred
+                        Log.e("json error", error.toString());
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
     }
 }
