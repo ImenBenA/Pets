@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -32,6 +33,7 @@ public class LostFragment extends Fragment {
     //ArrayList<Post> posts = new ArrayList<>();
     private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/post/all";
     PostService ps = new PostService();
+    static ArrayList<Post> posts = new ArrayList<>();
     public LostFragment() {
     }
 
@@ -39,9 +41,12 @@ public class LostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_post, container, false);
-
-        ArrayList<Post> posts = ps.getAll(getActivity());
-        /*RequestQueue queue = MySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue();
+        final PostsAdapter itemsAdapter = new PostsAdapter(root.getContext(), posts);
+        ListView listView = (ListView) root.findViewById(R.id.posts);
+        listView.setAdapter(itemsAdapter);
+        ps.getAllPosts(root.getContext(),itemsAdapter);
+/*
+       RequestQueue queue = MySingleton.getInstance(root.getContext()).getRequestQueue();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 getAllURL,
@@ -50,6 +55,7 @@ public class LostFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.e("json response", response.toString());
+                        ArrayList<Post> t = new ArrayList<>();
                         try{
                             for(int i=0; i<response.length(); i++){
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -65,7 +71,9 @@ public class LostFragment extends Fragment {
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
+                        itemsAdapter.notifyDataSetChanged();
                     }
+
                 },
                 new Response.ErrorListener(){
                     @Override
@@ -76,12 +84,16 @@ public class LostFragment extends Fragment {
         );
 
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
-        Log.v("posts" , posts.toString());*/
+*/
 
-        PostsAdapter itemsAdapter = new PostsAdapter(getActivity(), posts);
-        ListView listView = (ListView) root.findViewById(R.id.posts);
-        listView.setAdapter(itemsAdapter);
 
         return root;
+    }
+
+    public static void fillList(Post p){
+        posts.add(p);
+    }
+    public static void clearList (){
+        posts.clear();
     }
 }

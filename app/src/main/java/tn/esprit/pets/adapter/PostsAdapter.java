@@ -29,7 +29,7 @@ public class PostsAdapter extends ArrayAdapter<Post>{
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_post, parent, false);
         }
 
-        TextView description = (TextView) convertView.findViewById(R.id.description);
+        TextView description = (TextView) convertView.findViewById(R.id.post_description);
         description.setText(post.getDescription());
         //ImageView image = (ImageView) convertView.findViewById(R.id.post_image);
         //image.setImageResource(R.drawable.lost);

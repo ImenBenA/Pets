@@ -2,6 +2,7 @@ package tn.esprit.pets.service;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -22,15 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import tn.esprit.pets.adapter.PostAdapter;
+import tn.esprit.pets.adapter.PostsAdapter;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
+import tn.esprit.pets.fragment.LostFragment;
 
 public class PostService {
     private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/post/all";
     //private List<User> users = new ArrayList<>();
     private boolean ok;
-    private ArrayList<Post> list = new ArrayList<>();
+    private static ArrayList<Post> list = new ArrayList<>();
 
+    public ArrayList<Post> getList(){
+        return list;
+    }
 
 
     public PostService() {
@@ -62,7 +69,7 @@ public class PostService {
         return posts;
     }
 
-    public ArrayList<Post> getAllPosts(Context context) {
+    public void getAllPosts(Context context, final PostsAdapter p) {
         // Initialize a new RequestQueue instance
         //RequestQueue requestQueue = Volley.newRequestQueue(context);
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
@@ -83,7 +90,7 @@ public class PostService {
 
                         try {
                             // Loop through the array elements
-
+                            LostFragment.clearList();
                             for (int i = 0; i < response.length(); i++) {
                                 // Get current json object
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -95,15 +102,16 @@ public class PostService {
                                 String type = jsonObject.getString("type");
                                 // Display the formatted json data in text view
                                 Post post = new Post(id, description, imageUrl, new User(), type);
-                                posts.add(post);
-
+                                LostFragment.fillList(post);
                             }
+
+
                             Log.v("posts response", posts.toString());
-                            list = posts;
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        list = posts;
+                        p.notifyDataSetChanged();
                     }
                 },
                 new Response.ErrorListener() {
@@ -118,8 +126,9 @@ public class PostService {
         // Add JsonArrayRequest to the RequestQueue
         //requestQueue.add(jsonArrayRequest);
         MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
-        Log.v("posts", list.toString());
-        return list;
+        //Log.v("posts", list.toString());
+        //System.out.println("size : "+list.size());
+        //return list;
     }
 
     public ArrayList<Post> getAll(Context context) {
@@ -154,6 +163,7 @@ public class PostService {
             Log.v("posts response", "err");
             return null;
         }
+        Log.v("size ",posts.size()+"");
         return posts;
     }
 
