@@ -31,7 +31,8 @@ public class PostsAdapter extends ArrayAdapter<Post>{
 
         TextView description = (TextView) convertView.findViewById(R.id.post_description);
         description.setText(post.getDescription());
-        //ImageView image = (ImageView) convertView.findViewById(R.id.post_image);
+        ImageView image = (ImageView) convertView.findViewById(R.id.post_image);
+        //Picasso.with(getContext()).load(post.getImageUrl()).into(image);
         //image.setImageResource(R.drawable.lost);
         //Picasso.get().load(item.getUrlImage()).resize(50, 50).centerCrop().into(urlImage);
 

@@ -6,12 +6,14 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
 
@@ -19,8 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import tn.esprit.pets.adapter.PostAdapter;
@@ -90,7 +95,7 @@ public class PostService {
 
                         try {
                             // Loop through the array elements
-                            LostFragment.clearList();
+                           // LostFragment.clearList();
                             for (int i = 0; i < response.length(); i++) {
                                 // Get current json object
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -102,7 +107,7 @@ public class PostService {
                                 String type = jsonObject.getString("type");
                                 // Display the formatted json data in text view
                                 Post post = new Post(id, description, imageUrl, new User(), type);
-                                LostFragment.fillList(post);
+                               // LostFragment.fillList(post);
                             }
 
 
@@ -181,5 +186,49 @@ try {
 }
      */
 
+    public void addPost(Context context, final String data){
+        String url="http://10.0.2.2:18080/WSPets-web/api/post/add";
+        RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object=new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return super.getBodyContentType();
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return data == null ? null : data.getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+
+        }
+        ;
+        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
 
 }
