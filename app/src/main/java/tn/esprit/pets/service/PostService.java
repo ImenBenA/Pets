@@ -214,6 +214,7 @@ try {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 try {
+                    System.out.println(data);
                     return data == null ? null : data.getBytes("UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     return null;
@@ -222,7 +223,7 @@ try {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Content-Type", "application/json");
                 return headers;
             }
 

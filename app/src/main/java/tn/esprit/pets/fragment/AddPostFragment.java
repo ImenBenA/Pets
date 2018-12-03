@@ -73,6 +73,7 @@ public class AddPostFragment extends Fragment {
             public void onClick(View v) {
                 String description = etDescription.getText().toString();
                 String imageUrl =getStringImage(bitmap);
+                imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
                 String data =
                         "{\"description\": \""+description+"\",\n" +
                         "\t\"petImage\": \""+imageUrl+"\",\n" +
