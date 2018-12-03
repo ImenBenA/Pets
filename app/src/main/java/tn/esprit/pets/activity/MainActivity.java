@@ -45,7 +45,9 @@ import tn.esprit.pets.adapter.PostAdapter;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.fragment.AddPostFragment;
+import tn.esprit.pets.fragment.FoundFragment;
 import tn.esprit.pets.fragment.HomeFragment;
+import tn.esprit.pets.fragment.LostAndFoundFragment;
 import tn.esprit.pets.fragment.LostFragment;
 import tn.esprit.pets.fragment.SignupFragment;
 import tn.esprit.pets.service.UserService;
@@ -153,6 +155,38 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void run() {
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
+                }
+            }
+        });
+        found = (CardView) findViewById(R.id.found);
+        found.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new FoundFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
+                }
+            }
+        });
+        lostAndFound = (CardView) findViewById(R.id.all);
+        lostAndFound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostAndFoundFragment()).commit();
                     }
                 };
                 if (runnable != null) {

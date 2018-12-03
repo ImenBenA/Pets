@@ -12,9 +12,9 @@
         android:id="@+id/relative_layout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp">
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/tv_login"
@@ -39,25 +39,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="Image URL"
+                    android:text="Image"
                     android:textAllCaps="true"
                     android:textColor="@color/darkGray"
-                    android:textSize="15sp" />
+                    android:textSize="15sp" />-->
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add Image"
                     android:id="@+id/addImage"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/displayImage"
-                    />
+                    android:id="@+id/displayImage" />
 
                 <TextView
                     android:layout_width="wrap_content"

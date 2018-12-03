@@ -1,5 +1,11 @@
 package tn.esprit.pets.entity;
 
+import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+
+
 public class Post {
 
     private int id;
@@ -7,22 +13,25 @@ public class Post {
     private String imageUrl;
     private User user;
     private String type;
+    private Date date;
 
     public Post() {};
 
-    public Post(String description, String imageUrl, User user, String type) {
+    public Post(String description, String imageUrl, User user, String type, Date date) {
         this.description = description;
         this.imageUrl = imageUrl;
         this.user = user;
         this.type = type;
+        this.date = new Date();
     }
 
-    public Post(int id, String description, String imageUrl, User user, String type) {
+    public Post(int id, String description, String imageUrl, User user, String type, Date date) {
         this.id = id;
         this.description = description;
         this.imageUrl = imageUrl;
         this.user = user;
         this.type = type;
+        this.date = new Date();
     }
 
     public int getId() {
@@ -63,5 +72,13 @@ public class Post {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

@@ -125,6 +125,7 @@
             <!-- Row 2 -->
             <!-- Column 1 -->
             <android.support.v7.widget.CardView
+                android:id="@+id/all"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_columnWeight="1"

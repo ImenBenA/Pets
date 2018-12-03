@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +63,8 @@ public class PostService {
                 //User user = jsonObject.getJSONObject("user");
                 String type = jsonObject.getString("type");
                 // Display the formatted json data in text view
-                Post post = new Post(id, description, imageUrl, new User(), type);
-                posts.add(post);
+                //Post post = new Post(id, description, imageUrl, new User(), type);
+                //posts.add(post);
 
             }
             Log.v("posts response", posts.toString());
@@ -105,8 +106,9 @@ public class PostService {
                                 String imageUrl = jsonObject.getString("petImage");
                                 //User user = jsonObject.getJSONObject("user");
                                 String type = jsonObject.getString("type");
+                                Date date = (Date) jsonObject.get("date");
                                 // Display the formatted json data in text view
-                                Post post = new Post(id, description, imageUrl, new User(), type);
+                                Post post = new Post(id, description, imageUrl, new User(), type, date);
                                // LostFragment.fillList(post);
                             }
 
@@ -156,8 +158,8 @@ public class PostService {
                     //User user = jsonObject.getJSONObject("user");
                     String type = jsonObject.getString("type");
                     // Display the formatted json data in text view
-                    Post post = new Post(id, description, imageUrl, new User(), type);
-                    posts.add(post);
+                    //Post post = new Post(id, description, imageUrl, new User(), type);
+                    //posts.add(post);
                 }
                 Log.v("posts response", posts.toString());
             } catch (JSONException e) {
