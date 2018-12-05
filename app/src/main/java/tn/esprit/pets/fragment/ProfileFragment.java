@@ -42,6 +42,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends Fragment {
     View root;
+    String editURL = "http://10.0.2.2:18080/WSPets-web/api/user/update/";
+            //"/update/{id}/{username}/{password}/{email}/{picture}";
     TextView username, password, email, usernameTitle, phone;
     EditText usernameEdit, passwordEdit, emailEdit, usernameTitleEdit, phoneEdit;
     ImageView picture;
@@ -55,8 +57,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
-
-
 
         username = (TextView) root.findViewById(R.id.username);
         usernameTitle = (TextView) root.findViewById(R.id.usernameTitle);
@@ -77,8 +77,11 @@ public class ProfileFragment extends Fragment {
                     email.setVisibility(View.GONE);
                     phone.setVisibility(View.GONE);
                     usernameEdit.setVisibility(View.VISIBLE);
+                    usernameEdit.setText(MainActivity.userConnected.getUsername());
                     emailEdit.setVisibility(View.VISIBLE);
+                    emailEdit.setText(MainActivity.userConnected.getEmail());
                     passwordEdit.setVisibility(View.VISIBLE);
+                    passwordEdit.setText(MainActivity.userConnected.getPassword());
                     phoneEdit.setVisibility(View.VISIBLE);
                     edit.setText("Save");
                     //update on the ws
@@ -95,15 +98,13 @@ public class ProfileFragment extends Fragment {
                     phoneEdit.setVisibility(View.GONE);
                     edit.setText("Edit");
                     editing = false;
-
                 }
-
             }
         });
-        
-        //username.setText(MainActivity.userConnected.getUsername());
-        //password.setText(MainActivity.userConnected.getPassword());
-        //email.setText(MainActivity.userConnected.getEmail());
+
+        username.setText(MainActivity.userConnected.getUsername());
+        password.setText(MainActivity.userConnected.getPassword());
+        email.setText(MainActivity.userConnected.getEmail());
 
         return root;
     }

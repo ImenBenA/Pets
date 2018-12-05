@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private String getUserURL = "http://10.0.2.2:18080/WSPets-web/api/user/find/";
+    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
     int userId;
     GridLayout mainGrid;
     CardView lost, found, profile, settings, lostAndFound, messages;
@@ -139,10 +140,9 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences("data", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
-        getUserConnected(userId);
+        getUserConnected2(userId);
 
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
-        //final CardView lost = (CardView) mainGrid.getChildAt(0);
         lost = (CardView) findViewById(R.id.lost);
         lost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,26 +353,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getUserConnected2(final int id) {
-        String url = getUserURL + String.valueOf(id);
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                url,
+                getAllURL,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.e("json response", response.toString());
+
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                int id = jsonObject.getInt("id");
-                                String lusername = jsonObject.getString("username");
-                                String lpassword = jsonObject.getString("password");
-                                String email = jsonObject.getString("email");
-                                String picture = jsonObject.getString("picture");
-                                userConnected = new User(id,lusername,lpassword,email,picture);
-                                Log.e("usercon", userConnected.toString());
+                                int userId = jsonObject.getInt("id");
+                                if(id == userId) {
+                                    String username = jsonObject.getString("username");
+                                    String password = jsonObject.getString("password");
+                                    String email = jsonObject.getString("email");
+                                    String picture = jsonObject.getString("picture");
+                                    userConnected = new User(id,username,password,email,picture);
+                                    Log.e("userfound", userConnected.toString());
+                                    break;
+                                }
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -386,6 +389,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        //MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest);
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 }
