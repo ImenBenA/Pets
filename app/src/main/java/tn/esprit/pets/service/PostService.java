@@ -2,9 +2,6 @@ package tn.esprit.pets.service;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,8 +11,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,15 +20,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
-import tn.esprit.pets.adapter.PostAdapter;
 import tn.esprit.pets.adapter.PostsAdapter;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
-import tn.esprit.pets.fragment.LostFragment;
 
 public class PostService {
     private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/post/all";

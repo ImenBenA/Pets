@@ -1,5 +1,6 @@
 package tn.esprit.pets.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -23,12 +24,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tn.esprit.pets.R;
+import tn.esprit.pets.entity.User;
 import tn.esprit.pets.fragment.AddPostFragment;
 import tn.esprit.pets.fragment.SignupFragment;
+import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.service.UserService;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static User userConnected;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     RelativeLayout relativeLayout1, relativeLayout2;
@@ -53,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        sharedPreferences = this.getSharedPreferences("isConnect", MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences("data", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         isConnected = sharedPreferences.getBoolean("isConnect", false);
         if(isConnected) {
@@ -75,10 +79,10 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     final String lusername = username.getText().toString();
                     final String lpassword = password.getText().toString();
+                    isAuthentified(lusername, lpassword);
                     mRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            isAuthentified = userService.isAuthentified(getApplicationContext(), lusername, lpassword);
                             if (isAuthentified) {
                                 isConnected = true;
                                 editor.putBoolean("isConnect", true);
@@ -112,5 +116,50 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void isAuthentified(final String username, final String password) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                getAllURL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("json response", response.toString());
+
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                int id = jsonObject.getInt("id");
+                                String lusername = jsonObject.getString("username");
+                                String lpassword = jsonObject.getString("password");
+                                String email = jsonObject.getString("email");
+                                String picture = jsonObject.getString("picture");
+
+                                if (lusername.equalsIgnoreCase(username) && lpassword.equals(password)) {
+                                    isAuthentified = true;
+                                    userConnected = new User(lusername,lpassword,email,picture);
+                                    editor.putString("username", lusername);
+                                    editor.putInt("id", id);
+                                    editor.commit();
+                                    Log.e("is authentified", isAuthentified + userConnected.toString());
+                                    break;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            Log.e("Array exception", isAuthentified + "");
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("array error", error.toString());
+                    }
+                }
+        );
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 }

@@ -14,18 +14,18 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/textGrid"
                 android:text="Welcome !"
                 android:textSize="10sp"
                 android:textColor="@android:color/white"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" />-->
 
         </RelativeLayout>
 
@@ -125,7 +125,7 @@
             <!-- Row 2 -->
             <!-- Column 1 -->
             <android.support.v7.widget.CardView
-                android:id="@+id/all"
+                android:id="@+id/profile"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_columnWeight="1"
