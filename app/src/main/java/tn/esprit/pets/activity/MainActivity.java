@@ -38,6 +38,7 @@ import tn.esprit.pets.fragment.AddPostFragment;
 import tn.esprit.pets.fragment.FoundFragment;
 import tn.esprit.pets.fragment.LostAndFoundFragment;
 import tn.esprit.pets.fragment.LostFragment;
+import tn.esprit.pets.fragment.MessageFragment;
 import tn.esprit.pets.fragment.ProfileFragment;
 import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.service.UserService;
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
     //public static List<Post> posts = new ArrayList<>();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private String getUserURL = "http://10.0.2.2:18080/WSPets-web/api/user/find/";
-    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
+    private String getUserURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/find/";
+    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/all";
     int userId;
     GridLayout mainGrid;
     CardView lost, found, profile, settings, lostAndFound, messages;
@@ -191,7 +192,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        messages = (CardView) findViewById(R.id.messages);
+        messages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new MessageFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
+                }
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,8 @@ public class User implements Serializable {
     private String password;
     private String email;
     private String picture;
+    private String color;
+    private String name;
 
 
     public User(String username, String password, String email, String picture) {
@@ -74,5 +76,21 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", picture='" + picture + '\'' +
                 '}';
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

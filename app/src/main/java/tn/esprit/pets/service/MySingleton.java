@@ -14,6 +14,7 @@ public class MySingleton {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static Context mCtx;
+    private static String ip="10.0.2.2";
 
     private MySingleton(Context context) {
         mCtx = context;
@@ -41,6 +42,14 @@ public class MySingleton {
             mInstance = new MySingleton(context);
         }
         return mInstance;
+    }
+
+    public static String getIp() {
+        return ip;
+    }
+
+    public static void setIp(String ip) {
+        MySingleton.ip = ip;
     }
 
     public RequestQueue getRequestQueue() {

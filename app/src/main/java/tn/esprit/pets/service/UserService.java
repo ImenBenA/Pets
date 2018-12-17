@@ -3,6 +3,7 @@ package tn.esprit.pets.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,7 +24,7 @@ import tn.esprit.pets.entity.User;
 
 public class UserService {
 
-    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/all";
     //private List<User> users = new ArrayList<>();
     private boolean ok;
 
@@ -165,7 +166,7 @@ public class UserService {
 
     public void addUser(Context context, String username, String password, String email, String picture) {
         // Initialize a new RequestQueue instance
-        String Url = "http://10.0.2.2:18080/WSPets-web/api/user/add/" + username + "/" + password + "/" + email + "/" + picture;
+        String Url = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/add/" + username + "/" + password + "/" + email + "/" + picture;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
 
@@ -206,6 +207,7 @@ public class UserService {
                     }
                 }
         );
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy( 5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonArrayRequest);
     }
 }

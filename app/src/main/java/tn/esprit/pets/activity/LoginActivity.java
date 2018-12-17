@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login, signup;
     boolean isConnected, isAuthentified;
     EditText username, password;
-    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/all";
     UserService userService = new UserService();
 
     Handler mHandler = new Handler();
@@ -160,6 +161,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
+        //jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy( 5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest);
     }
 }

@@ -27,7 +27,7 @@ import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
 
 public class PostService {
-    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/post/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/post/all";
     //private List<User> users = new ArrayList<>();
     private boolean ok;
     private static ArrayList<Post> list = new ArrayList<>();
@@ -180,7 +180,7 @@ try {
      */
 
     public void addPost(Context context, final String data){
-        String url="http://10.0.2.2:18080/WSPets-web/api/post/add";
+        String url="http://"+MySingleton.getIp()+":18080/WSPets-web/api/post/add";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

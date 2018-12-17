@@ -42,7 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends Fragment {
     View root;
-    String editURL = "http://10.0.2.2:18080/WSPets-web/api/user/update/";
+    String editURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/update/";
             //"/update/{id}/{username}/{password}/{email}/{picture}";
     TextView username, password, email, usernameTitle, phone;
     EditText usernameEdit, passwordEdit, emailEdit, usernameTitleEdit, phoneEdit;

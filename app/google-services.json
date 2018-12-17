@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "901872320300",
+    "firebase_url": "https://petsapp-8f661.firebaseio.com",
+    "project_id": "petsapp-8f661",
+    "storage_bucket": "petsapp-8f661.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901872320300:android:261adf86f6e90a9d",
+        "android_client_info": {
+          "package_name": "tn.esprit.pets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901872320300-f8qg99jdr7m80qc98miiu5d2favvqjs0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tn.esprit.pets",
+            "certificate_hash": "69632f3270bf64c2b0f9a079928f9b2933428ded"
+          }
+        },
+        {
+          "client_id": "901872320300-3q8k0ga1cidcs2aq93o94moo396opbr3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD35QKzGIT8u35yKS9-JhJPyyyTHsd70Pc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901872320300-3q8k0ga1cidcs2aq93o94moo396opbr3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
