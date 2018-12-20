@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login, signup;
     boolean isConnected, isAuthentified;
     EditText username, password;
-    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/allUsers.php";
     UserService userService = new UserService();
 
     Handler mHandler = new Handler();
@@ -136,11 +136,11 @@ public class LoginActivity extends AppCompatActivity {
                                 String lusername = jsonObject.getString("username");
                                 String lpassword = jsonObject.getString("password");
                                 String email = jsonObject.getString("email");
-                                String picture = jsonObject.getString("picture");
+                                //String picture = jsonObject.getString("picture");
 
                                 if (lusername.equalsIgnoreCase(username) && lpassword.equals(password)) {
                                     isAuthentified = true;
-                                    userConnected = new User(lusername,lpassword,email,picture);
+                                    userConnected = new User(lusername,lpassword,email,"");
                                     editor.putString("username", lusername);
                                     editor.putInt("id", id);
                                     editor.commit();

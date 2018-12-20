@@ -3,6 +3,7 @@ package tn.esprit.pets.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import tn.esprit.pets.entity.User;
@@ -164,15 +166,15 @@ public class UserService {
         return ok;
     }
 
-    public void addUser(Context context, String username, String password, String email, String picture) {
+    public void addUser(Context context, final String username, final String password, final String email, String picture) {
         // Initialize a new RequestQueue instance
-        String Url = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/add/" + username + "/" + password + "/" + email + "/" + picture;
+        String Url = "http://"+MySingleton.getIp()+"/PetsWS/addUser.php";
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                 Url,
                 null,
                 new Response.Listener<JSONArray>() {
@@ -206,7 +208,23 @@ public class UserService {
                         Log.e("json error", error.toString());
                     }
                 }
-        );
+        ){
+            @Override
+            public byte[] getBody() {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("email", email);
+                params2.put("username", username);
+                params2.put("password", password);
+                return new JSONObject(params2).toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        }
+
+                ;
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy( 5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonArrayRequest);
     }

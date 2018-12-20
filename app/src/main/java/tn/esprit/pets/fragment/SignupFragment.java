@@ -45,12 +45,12 @@ public class SignupFragment extends Fragment {
                 String name=username.getText().toString();
                 String pass = password.getText().toString();
                 String mail = email.getText().toString();
-                if (name.length()>5 && verifPassword(pass) && verifMail(mail)){
+                //if (name.length()>5 && verifPassword(pass) && verifMail(mail)){
                     us.addUser(root.getContext(),name,pass,mail,"default");
                     getFragmentManager().popBackStack();
-                }
-                else
-                    System.out.println("verifier vos données");
+               // }
+                //else
+                   // System.out.println("verifier vos données");
             }
         });
         return root;
