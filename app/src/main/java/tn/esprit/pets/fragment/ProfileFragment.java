@@ -164,6 +164,15 @@ public class ProfileFragment extends Fragment {
                         Log.e("update resp", response.toString());
                         try {
                             JSONObject jsonObject = response.getJSONObject(0);
+                            usernameTitle.setText(usernamel);
+                            username.setText(usernamel);
+                            usernameEdit.setText(usernamel);
+                            password.setText(passwordl);
+                            passwordEdit.setText(passwordl);
+                            email.setText(emaill);
+                            emailEdit.setText(emaill);
+                            phone.setText(phonel);
+                            phoneEdit.setText(phonel);
                         } catch (JSONException e) {
                             Log.e("update exc", " ");
                             e.printStackTrace();
@@ -185,15 +194,7 @@ public class ProfileFragment extends Fragment {
                 params2.put("password", passwordl);
                 params2.put("phone", phonel);
                 params2.put("id", id);
-                usernameTitle.setText(usernamel);
-                username.setText(usernamel);
-                usernameEdit.setText(usernamel);
-                password.setText(passwordl);
-                passwordEdit.setText(passwordl);
-                email.setText(emaill);
-                emailEdit.setText(emaill);
-                phone.setText(phonel);
-                phoneEdit.setText(phonel);
+
                 return new JSONObject(params2).toString().getBytes();
             }
 

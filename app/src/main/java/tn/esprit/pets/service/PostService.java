@@ -179,15 +179,15 @@ try {
 }
      */
 
-    public void addPost(Context context, final String data){
-        String url="http://"+MySingleton.getIp()+":18080/WSPets-web/api/post/add";
+    public void addPost(Context context, final String description,final String imageUrl){
+        String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url,null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONArray response) {
 
                 try {
-                    JSONObject object=new JSONObject(response);
+                    JSONObject jsonObject = response.getJSONObject(0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -198,31 +198,25 @@ try {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
+            @Override
+            public byte[] getBody() {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("description", description);
+                params2.put("petImage", imageUrl);
+                params2.put("type", "default");
+                params2.put("user_id", "48");
+                params2.put("date", "2018-07-07");
+                return new JSONObject(params2).toString().getBytes();
+            }
+
             @Override
             public String getBodyContentType() {
-                return super.getBodyContentType();
+                return "application/json";
             }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    System.out.println(data);
-                    return data == null ? null : data.getBytes("UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    return null;
-                }
-            }
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-        }
+        };
         ;
-        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
+        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
     }
 
 }

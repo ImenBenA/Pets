@@ -80,7 +80,7 @@ public class AddPostFragment extends Fragment {
                         "\t\"type\" : \"aa\"\n" +
                         "}";
 
-                ps.addPost(root.getContext(),data);
+                ps.addPost(root.getContext(),description,imageUrl);
                 System.out.println("clicked");
             }
         });
@@ -89,7 +89,7 @@ public class AddPostFragment extends Fragment {
 
     public String getStringImage(Bitmap bm){
         ByteArrayOutputStream ba=new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG,100,ba);
+        bm.compress(Bitmap.CompressFormat.JPEG,100,ba);
         byte[] imageByte= ba.toByteArray();
         String encode=Base64.encodeToString(imageByte,Base64.DEFAULT);
         return  encode;
