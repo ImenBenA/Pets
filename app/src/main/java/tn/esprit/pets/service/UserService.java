@@ -26,7 +26,7 @@ import tn.esprit.pets.entity.User;
 
 public class UserService {
 
-    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/all";
+    private String getAllURL = "http://" + MySingleton.getIp() + ":18080/WSPets-web/api/user/all";
     //private List<User> users = new ArrayList<>();
     private boolean ok;
 
@@ -88,10 +88,10 @@ public class UserService {
                                 String username = jsonObject.getString("username");
                                 String password = jsonObject.getString("password");
                                 String email = jsonObject.getString("email");
-                                String picture = jsonObject.getString("picture");
+                                String phone = jsonObject.getString("phone");
 
                                 // Display the formatted json data in text view
-                                User user = new User(id, username, password, email, picture);
+                                User user = new User(id, username, password, email, phone);
                                 users.add(user);
                                 Log.e("Array response", users.toString());
                             }
@@ -166,9 +166,9 @@ public class UserService {
         return ok;
     }
 
-    public void addUser(Context context, final String username, final String password, final String email, String picture) {
+    public void addUser(Context context, final String username, final String password, final String email) {
         // Initialize a new RequestQueue instance
-        String Url = "http://"+MySingleton.getIp()+"/PetsWS/addUser.php";
+        String Url = "http://" + MySingleton.getIp() + "/PetsWS/addUser.php";
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
 
@@ -208,7 +208,7 @@ public class UserService {
                         Log.e("json error", error.toString());
                     }
                 }
-        ){
+        ) {
             @Override
             public byte[] getBody() {
                 HashMap<String, String> params2 = new HashMap<String, String>();
@@ -222,10 +222,7 @@ public class UserService {
             public String getBodyContentType() {
                 return "application/json";
             }
-        }
-
-                ;
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy( 5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        };
         requestQueue.add(jsonArrayRequest);
     }
 }

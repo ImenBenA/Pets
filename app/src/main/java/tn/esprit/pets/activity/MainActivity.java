@@ -386,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
                                     String username = jsonObject.getString("username");
                                     String password = jsonObject.getString("password");
                                     String email = jsonObject.getString("email");
-                                    String picture = jsonObject.getString("picture");
-                                    userConnected = new User(id,username,password,email,picture);
+                                    String phone = jsonObject.getString("phone");
+                                    userConnected = new User(id, username, password, email, phone);
                                     Log.e("userfound", userConnected.toString());
                                     break;
                                 }

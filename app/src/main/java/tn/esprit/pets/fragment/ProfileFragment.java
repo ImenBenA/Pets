@@ -2,6 +2,7 @@ package tn.esprit.pets.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -19,22 +19,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 
 import tn.esprit.pets.R;
-import tn.esprit.pets.activity.LoginActivity;
-import tn.esprit.pets.activity.MainActivity;
-import tn.esprit.pets.adapter.PostsAdapter;
-import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.service.MySingleton;
 
@@ -42,13 +35,18 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends Fragment {
     View root;
-    String editURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/update/";
-            //"/update/{id}/{username}/{password}/{email}/{picture}";
+    User userConnected;
+    String getURL = "http://" + MySingleton.getIp() + "/PetsWS/user/userById.php?id=";
+    String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
     TextView username, password, email, usernameTitle, phone;
     EditText usernameEdit, passwordEdit, emailEdit, usernameTitleEdit, phoneEdit;
     ImageView picture;
     Button edit;
+    int userId;
     boolean editing = false;
+    boolean saving = false;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     public ProfileFragment() {
     }
@@ -57,6 +55,11 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
+        sharedPreferences = getContext().getSharedPreferences("data", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        userId = sharedPreferences.getInt("id", 0);
+        getUserConnectedArray(String.valueOf(userId));
+
 
         username = (TextView) root.findViewById(R.id.username);
         usernameTitle = (TextView) root.findViewById(R.id.usernameTitle);
@@ -77,17 +80,18 @@ public class ProfileFragment extends Fragment {
                     email.setVisibility(View.GONE);
                     phone.setVisibility(View.GONE);
                     usernameEdit.setVisibility(View.VISIBLE);
-                    usernameEdit.setText(MainActivity.userConnected.getUsername());
                     emailEdit.setVisibility(View.VISIBLE);
-                    emailEdit.setText(MainActivity.userConnected.getEmail());
                     passwordEdit.setVisibility(View.VISIBLE);
-                    passwordEdit.setText(MainActivity.userConnected.getPassword());
                     phoneEdit.setVisibility(View.VISIBLE);
                     edit.setText("Save");
-                    //update on the ws
                     editing = true;
-                }
-                else {
+                } else {
+                    updateUser(getContext(), usernameEdit.getText().toString(),
+                            passwordEdit.getText().toString(),
+                            emailEdit.getText().toString(),
+                            String.valueOf(userId),
+                            phoneEdit.getText().toString());
+
                     username.setVisibility(View.VISIBLE);
                     password.setVisibility(View.VISIBLE);
                     email.setVisibility(View.VISIBLE);
@@ -101,12 +105,103 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
-        username.setText(MainActivity.userConnected.getUsername());
-        password.setText(MainActivity.userConnected.getPassword());
-        email.setText(MainActivity.userConnected.getEmail());
-
         return root;
     }
 
+    public void getUserConnectedArray(final String id) {
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                getURL + id,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("json response", response.toString());
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(0);
+                            int userId = jsonObject.getInt("id");
+                            String usernamel = jsonObject.getString("username");
+                            String passwordl = jsonObject.getString("password");
+                            String emaill = jsonObject.getString("email");
+                            String phonel = jsonObject.getString("phone");
+                            userConnected = new User(userId, usernamel, passwordl, emaill, phonel);
+
+                            usernameTitle.setText(userConnected.getUsername());
+                            username.setText(userConnected.getUsername());
+                            usernameEdit.setText(userConnected.getUsername());
+                            password.setText(userConnected.getPassword());
+                            passwordEdit.setText(userConnected.getPassword());
+                            email.setText(userConnected.getEmail());
+                            emailEdit.setText(userConnected.getEmail());
+                            phone.setText(userConnected.getPhone());
+                            phoneEdit.setText(userConnected.getPhone());
+
+                            Log.e("userfound", userConnected.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("array error", error.toString());
+                    }
+                }
+        );
+        MySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+    }
+
+    public void updateUser(Context context, final String usernamel, final String passwordl, final String emaill, final String id, final String phonel) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.POST,
+                updateUEL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("update resp", response.toString());
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(0);
+                        } catch (JSONException e) {
+                            Log.e("update exc", " ");
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("json err upd", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            public byte[] getBody() {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("email", emaill);
+                params2.put("username", usernamel);
+                params2.put("password", passwordl);
+                params2.put("phone", phonel);
+                params2.put("id", id);
+                usernameTitle.setText(usernamel);
+                username.setText(usernamel);
+                usernameEdit.setText(usernamel);
+                password.setText(passwordl);
+                passwordEdit.setText(passwordl);
+                email.setText(emaill);
+                emailEdit.setText(emaill);
+                phone.setText(phonel);
+                phoneEdit.setText(phonel);
+                return new JSONObject(params2).toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        MySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+    }
 }

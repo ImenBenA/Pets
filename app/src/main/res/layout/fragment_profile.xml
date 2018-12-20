@@ -35,7 +35,6 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:text="Amouna imen"
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="21sp"/>
@@ -58,75 +57,6 @@
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:src="@drawable/ic_email"/>
-            <TextView
-                android:id="@+id/email"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:textColor="@color/darkGray"
-                android:layout_height="wrap_content"
-
-                android:paddingLeft="20dp"
-                android:text="imen.benabderrahmen@esprit.tn"/>
-
-            <EditText
-                android:visibility="gone"
-                android:id="@+id/emailedit"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/et_bg_accent"
-                android:fontFamily="sans-serif-light"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textColor="@color/darkGray"
-                android:textSize="15sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_phone"/>
-            <TextView
-                android:id="@+id/phone"
-                android:textStyle="bold"
-                android:textColor="@color/darkGray"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="+216 96 476 000"/>
-            <EditText
-                android:visibility="gone"
-                android:id="@+id/phoneedit"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/et_bg_accent"
-                android:fontFamily="sans-serif-light"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textColor="@color/darkGray"
-                android:textSize="15sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
                 android:src="@drawable/ic_username"/>
             <TextView
                 android:id="@+id/username"
@@ -135,8 +65,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="imen"/>
+                android:paddingLeft="20dp"/>
             <EditText
                 android:visibility="gone"
                 android:id="@+id/usernameedit"
@@ -168,11 +97,78 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="password"/>
+                android:paddingLeft="20dp"/>
             <EditText
                 android:visibility="gone"
                 android:id="@+id/passwordedit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/et_bg_accent"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/darkGray"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_email"/>
+            <TextView
+                android:id="@+id/email"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:textColor="@color/darkGray"
+                android:layout_height="wrap_content"
+
+                android:paddingLeft="20dp"/>
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/emailedit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/et_bg_accent"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/darkGray"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_phone"/>
+            <TextView
+                android:id="@+id/phone"
+                android:textStyle="bold"
+                android:textColor="@color/darkGray"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"/>
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/phoneedit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/et_bg_accent"

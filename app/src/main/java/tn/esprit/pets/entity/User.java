@@ -8,24 +8,24 @@ public class User implements Serializable {
     private String username;
     private String password;
     private String email;
-    private String picture;
+    private String phone;
     private String color;
     private String name;
 
 
-    public User(String username, String password, String email, String picture) {
+    public User(String username, String password, String email, String phone) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.picture = picture;
+        this.phone = phone;
     }
 
-    public User(int id, String username, String password, String email, String picture) {
+    public User(int id, String username, String password, String email, String phone) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.picture = picture;
+        this.phone = phone;
     }
 
     public User() {
@@ -55,27 +55,8 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
     public int getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", picture='" + picture + '\'' +
-                '}';
     }
 
     public String getColor() {
@@ -86,11 +67,29 @@ public class User implements Serializable {
         this.color = color;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

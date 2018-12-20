@@ -136,11 +136,11 @@ public class LoginActivity extends AppCompatActivity {
                                 String lusername = jsonObject.getString("username");
                                 String lpassword = jsonObject.getString("password");
                                 String email = jsonObject.getString("email");
-                                //String picture = jsonObject.getString("picture");
+                                String phone = jsonObject.getString("phone");
 
                                 if (lusername.equalsIgnoreCase(username) && lpassword.equals(password)) {
                                     isAuthentified = true;
-                                    userConnected = new User(lusername,lpassword,email,"");
+                                    userConnected = new User(lusername , lpassword, email, phone);
                                     editor.putString("username", lusername);
                                     editor.putInt("id", id);
                                     editor.commit();

@@ -46,7 +46,7 @@ public class SignupFragment extends Fragment {
                 String pass = password.getText().toString();
                 String mail = email.getText().toString();
                 //if (name.length()>5 && verifPassword(pass) && verifMail(mail)){
-                    us.addUser(root.getContext(),name,pass,mail,"default");
+                    us.addUser(root.getContext(),name,pass,mail);
                     getFragmentManager().popBackStack();
                // }
                 //else
