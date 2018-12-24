@@ -16,10 +16,10 @@
 
         <ImageView
             android:id="@+id/post_image"
-            android:src="@drawable/lost"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="3dp"
+            />
         <TextView
             android:paddingBottom="10dp"
             android:textAlignment="center"

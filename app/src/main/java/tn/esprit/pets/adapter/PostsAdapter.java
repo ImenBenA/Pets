@@ -36,7 +36,7 @@ public class PostsAdapter extends ArrayAdapter<Post>{
         date.setText(post.getDate().toString());
         Picasso.with(getContext()).load(post.getImageUrl()).into(image);
         //image.setImageResource(R.drawable.lost);
-        //Picasso.get().load(item.getUrlImage()).resize(50, 50).centerCrop().into(urlImage);
+        //Picasso.get().load(post.getImageUrl()).resize(50, 50).centerCrop().into(image);
 
         return convertView;
     }

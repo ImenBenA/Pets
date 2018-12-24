@@ -33,7 +33,7 @@ import tn.esprit.pets.service.MySingleton;
 
 public class LostFragment extends Fragment {
 
-    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/post/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts";
     static ArrayList<Post> lost = new ArrayList<>();
     View root;
     PostsAdapter itemsAdapter;
@@ -71,6 +71,7 @@ public class LostFragment extends Fragment {
                                     int id = jsonObject.getInt("id");
                                     String description = jsonObject.getString("description");
                                     String imageUrl = jsonObject.getString("petImage");
+                                    String link ="http://"+MySingleton.getIp()+"/PetsWS/post/"+imageUrl;
                                     //String type = jsonObject.getString("type");
                                     DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     Date date = null;
@@ -79,9 +80,10 @@ public class LostFragment extends Fragment {
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                    JSONObject userObject = (JSONObject) jsonObject.get("user");
+                                    System.out.println(link);
+                                    //JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
-                                    Post post = new Post(id, description, imageUrl, new User(), type, date);
+                                    Post post = new Post(id, description, link, new User(), type, date);
                                     lost.add(post);
                                 }
 

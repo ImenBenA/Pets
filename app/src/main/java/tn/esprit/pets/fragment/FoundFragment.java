@@ -32,7 +32,7 @@ import tn.esprit.pets.service.MySingleton;
 
 public class FoundFragment extends Fragment {
 
-    private String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/post/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts";
     static ArrayList<Post> found = new ArrayList<>();
     View root;
     PostsAdapter itemsAdapter;
@@ -78,7 +78,7 @@ public class FoundFragment extends Fragment {
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                    JSONObject userObject = (JSONObject) jsonObject.get("user");
+                                   // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
                                     Post post = new Post(id, description, imageUrl, new User(), type, date);
                                     found.add(post);
