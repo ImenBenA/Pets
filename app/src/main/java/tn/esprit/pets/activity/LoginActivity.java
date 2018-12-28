@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login, signup;
     boolean isConnected, isAuthentified;
     EditText username, password;
-    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/allUsers.php";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/user/allUsers.php";
     UserService userService = new UserService();
 
     Handler mHandler = new Handler();

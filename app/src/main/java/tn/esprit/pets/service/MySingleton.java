@@ -14,7 +14,7 @@ public class MySingleton {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static Context mCtx;
-    private static String ip="192.168.100.44";
+    private static String ip="192.168.1.5";
 
     private MySingleton(Context context) {
         mCtx = context;

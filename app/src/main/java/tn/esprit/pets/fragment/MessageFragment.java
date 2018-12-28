@@ -23,7 +23,6 @@ import com.scaledrone.lib.Scaledrone;
 import java.util.Random;
 
 import tn.esprit.pets.R;
-import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.MessageAdapter;
 import tn.esprit.pets.entity.Message;
 import tn.esprit.pets.entity.User;
@@ -44,7 +43,7 @@ public class MessageFragment extends Fragment implements RoomListener {
         root = inflater.inflate(R.layout.fragment_chat, container, false);
         editText = (EditText) root.findViewById(R.id.editText);
         User data = new User();
-        data.setName(MainActivity.userConnected.getUsername());
+        data.setName(getRandomName());
         data.setColor(getRandomColor());
         messageAdapter = new MessageAdapter(root.getContext());
         messagesView = (ListView) root.findViewById(R.id.messages_view);
