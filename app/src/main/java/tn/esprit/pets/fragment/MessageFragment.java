@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.scaledrone.lib.Listener;
 import com.scaledrone.lib.Member;
 import com.scaledrone.lib.Room;
@@ -41,6 +42,7 @@ public class MessageFragment extends Fragment implements RoomListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_chat, container, false);
+        System.out.println(FirebaseInstanceId.getInstance().getToken());
         editText = (EditText) root.findViewById(R.id.editText);
         User data = new User();
         data.setName(getRandomName());

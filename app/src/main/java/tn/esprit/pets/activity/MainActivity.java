@@ -1,5 +1,6 @@
 package tn.esprit.pets.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import tn.esprit.pets.R;
@@ -54,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private String getUserURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/find/";
-    private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/all";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/user/allUsers.php";
+    private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
     int userId;
     GridLayout mainGrid;
     CardView lost, found, profile, settings, lostAndFound, messages;
@@ -229,13 +232,6 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         UserService us = new UserService();
         us.getAllUsers(this);
-        //boolean ok = us.isAuthentified(this, "imen", "kooo");
-        /*posts.add(new Post("kiko", "https://www.petsafe.net/media/images/learn/spay-kittens-article-thumbnail.jpg"));
-        posts.add(new Post("this cat is currently injured and hungry near cvs, huston texas", "https://i2.wp.com/consciouscat.net/wp-content/uploads/2014/10/catblog1-e1414762887270.png"));
-        posts.add(new Post("this cat was found at bed, bath and beyond, boston", "https://www.cats.org.uk/uploads/branches/1/environment-faqs.jpg"));
-        posts.add(new Post("9attous bahdha poubelle el khamja mta el cité", "https://www.aspcapetinsurance.com/media/1080/14.jpg?width=400&height=400"));
-        posts.add(new Post("9atous 7ay lkhadhra", "https://pbs.twimg.com/profile_images/930937305686298629/TcUPwLQE_400x400.jpg"));
-    */
     }
 
     @Override
@@ -406,5 +402,46 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest);
+    }
+    public void updateUser(Context context, final String token, final String id) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.POST,
+                updateUEL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("update resp", response.toString());
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(0);
+                        } catch (JSONException e) {
+                            Log.e("update exc", " ");
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("json err upd", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            public byte[] getBody() {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("token", token);
+                params2.put("id", id);
+
+                return new JSONObject(params2).toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
     }
 }

@@ -13,6 +13,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -215,6 +216,7 @@ public class UserService {
                 params2.put("email", email);
                 params2.put("username", username);
                 params2.put("password", password);
+                params2.put("token",FirebaseInstanceId.getInstance().getToken());
                 return new JSONObject(params2).toString().getBytes();
             }
 

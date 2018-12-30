@@ -81,7 +81,6 @@ public class AddPostFragment extends Fragment {
                         "}";
 
                 ps.addPost(root.getContext(),description,imageUrl);
-                System.out.println("clicked");
             }
         });
         return root;

@@ -81,9 +81,9 @@ public class LostFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                     System.out.println(link);
-                                    //JSONObject userObject = (JSONObject) jsonObject.get("user_id");
-                                    //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
+                                    JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     Post post = new Post(id, description, link, new User(), type, date);
+                                    User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
                                     lost.add(post);
                                 }
 

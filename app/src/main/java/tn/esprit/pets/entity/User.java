@@ -11,6 +11,7 @@ public class User implements Serializable {
     private String phone;
     private String color;
     private String name;
+    private String token;
 
 
     public User(String username, String password, String email, String phone) {
@@ -26,6 +27,21 @@ public class User implements Serializable {
         this.password = password;
         this.email = email;
         this.phone = phone;
+    }
+
+    public User(int id, String username, String email, String phone) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+    }
+    public User(int id, String username, String password, String email, String phone,String token) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.token = token;
     }
 
     public User() {
@@ -91,5 +107,13 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -15,6 +15,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import tn.esprit.pets.R;
 import tn.esprit.pets.activity.MainActivity;
 
@@ -31,7 +33,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //Calling method to generate notification
         try {
-            sendNotification(remoteMessage.getData().toString());
+            sendNotification(remoteMessage.getData());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -39,16 +41,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     //This method is only generating push notification
     //private void sendNotification(String title, String messageBody) {
-        private void sendNotification(String message) throws JSONException {
+        private void sendNotification(Map<String, String> message) throws JSONException {
         String id="";
         String messageBody = "" ;
         String title=" ";
             System.out.println("message : " +message);
-        JSONObject jsonObject = new JSONObject(message);
-            System.out.println("dkhaaaaal oyyyyyy");
+        //JSONObject jsonObject = new JSONObject(message);
+            System.out.println("tahche");
         //id=jsonObject.getString("id");
-//        messageBody=jsonObject.getString("body");
- //       title=jsonObject.getString("title");
+        messageBody=message.get("body");
+        title=message.get("title");
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
