@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import tn.esprit.pets.R;
+import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.service.MySingleton;
 
@@ -58,8 +60,6 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = getContext().getSharedPreferences("data", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
-        getUserConnectedArray(String.valueOf(userId));
-
 
         username = (TextView) root.findViewById(R.id.username);
         usernameTitle = (TextView) root.findViewById(R.id.usernameTitle);
@@ -71,6 +71,9 @@ public class ProfileFragment extends Fragment {
         emailEdit = (EditText) root.findViewById(R.id.emailedit);
         phoneEdit = (EditText) root.findViewById(R.id.phoneedit);
         edit = (Button) root.findViewById(R.id.edit);
+
+        getUserConnectedArray();
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,23 +111,9 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    public void getUserConnectedArray(final String id) {
-        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                getURL + id,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.e("json response", response.toString());
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            int userId = jsonObject.getInt("id");
-                            String usernamel = jsonObject.getString("username");
-                            String passwordl = jsonObject.getString("password");
-                            String emaill = jsonObject.getString("email");
-                            String phonel = jsonObject.getString("phone");
-                            userConnected = new User(userId, usernamel, passwordl, emaill, phonel);
+    public void getUserConnectedArray() {
+
+                            userConnected = MainActivity.userConnected;
 
                             usernameTitle.setText(userConnected.getUsername());
                             username.setText(userConnected.getUsername());
@@ -136,47 +125,29 @@ public class ProfileFragment extends Fragment {
                             phone.setText(userConnected.getPhone());
                             phoneEdit.setText(userConnected.getPhone());
 
-                            Log.e("userfound", userConnected.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("array error", error.toString());
-                    }
-                }
-        );
-        MySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
     }
 
     public void updateUser(Context context, final String usernamel, final String passwordl, final String emaill, final String id, final String phonel) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 updateUEL,
                 null,
-                new Response.Listener<JSONArray>() {
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         Log.e("update resp", response.toString());
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            usernameTitle.setText(usernamel);
-                            username.setText(usernamel);
-                            usernameEdit.setText(usernamel);
-                            password.setText(passwordl);
-                            passwordEdit.setText(passwordl);
-                            email.setText(emaill);
-                            emailEdit.setText(emaill);
-                            phone.setText(phonel);
-                            phoneEdit.setText(phonel);
-                        } catch (JSONException e) {
-                            Log.e("update exc", " ");
-                            e.printStackTrace();
-                        }
+                        JSONObject jsonObject = response;
+                        usernameTitle.setText(usernamel);
+                        username.setText(usernamel);
+                        usernameEdit.setText(usernamel);
+                        password.setText(passwordl);
+                        passwordEdit.setText(passwordl);
+                        email.setText(emaill);
+                        emailEdit.setText(emaill);
+                        phone.setText(phonel);
+                        phoneEdit.setText(phonel);
+                        editor.putString("username",usernamel);
+                        editor.putString("password",passwordl);
                     }
                 },
                 new Response.ErrorListener() {
@@ -203,6 +174,6 @@ public class ProfileFragment extends Fragment {
                 return "application/json";
             }
         };
-        MySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+        MySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 }

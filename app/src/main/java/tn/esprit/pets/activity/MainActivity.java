@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -146,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
         String name=sharedPreferences.getString("username", "");
         String pass=sharedPreferences.getString("password", "");
         getUserConnected2(userId,name,pass);
+        if (userConnected!=null)
+        {
+            if(!userConnected.getToken().equals(FirebaseInstanceId.getInstance().getToken()))
+                updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
+        }
 
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         lost = (CardView) findViewById(R.id.lost);
@@ -406,7 +412,6 @@ public class MainActivity extends AppCompatActivity {
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
     public void updateUser(Context context, final String token, final String id) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.POST,
                 updateUEL,
