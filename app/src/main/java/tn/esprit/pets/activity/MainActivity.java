@@ -55,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
     //public static List<Post> posts = new ArrayList<>();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private String getUserURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/user/find/";
-    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/user/allUsers.php";
+    private String getUserURL = "http://"+MySingleton.getIp()+"/PetsWS/user/userById.php?id=";
     private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
     int userId;
     GridLayout mainGrid;
@@ -141,10 +140,12 @@ public class MainActivity extends AppCompatActivity {
 
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
-        sharedPreferences = this.getSharedPreferences("data", MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
-        getUserConnected2(userId);
+        String name=sharedPreferences.getString("username", "");
+        String pass=sharedPreferences.getString("password", "");
+        getUserConnected2(userId,name,pass);
 
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         lost = (CardView) findViewById(R.id.lost);
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().add(R.id.drawer_layout, new AddPostFragment()).commit();
+                getSupportFragmentManager().beginTransaction().addToBackStack("fragment").add(R.id.drawer_layout, new AddPostFragment()).commit();
             }
         });
 
@@ -364,35 +365,36 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(objectRequest);
     }
 
-    public void getUserConnected2(final int id) {
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+    public void getUserConnected2(final int id, final String name, final String pass) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                getAllURL,
+                getUserURL+id,
                 null,
-                new Response.Listener<JSONArray>() {
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         Log.e("json response", response.toString());
 
                         try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                int userId = jsonObject.getInt("id");
-                                if(id == userId) {
-                                    String username = jsonObject.getString("username");
-                                    String password = jsonObject.getString("password");
-                                    String email = jsonObject.getString("email");
-                                    String phone = jsonObject.getString("phone");
-                                    userConnected = new User(id, username, password, email, phone);
+                            if(response.toString().length()>0){
+                                JSONObject jsonObject = response;
+                                int id = Integer.parseInt(jsonObject.getString("id"));
+                                String username = jsonObject.getString("username");
+                                String password = jsonObject.getString("password");
+                                String email = jsonObject.getString("email");
+                                String phone = jsonObject.getString("phone");
+                                String token= jsonObject.getString("token");
+                                if (username.equals(name)&&password.equals(pass))
+                                    userConnected = new User(id,username,password, email, phone,token);
                                     Log.e("userfound", userConnected.toString());
-                                    break;
                                 }
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            } catch (JSONException e1) {
+                            Log.e("can't bound", " error bounding");
+                            e1.printStackTrace();
                         }
                     }
+
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -401,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest);
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
     public void updateUser(Context context, final String token, final String id) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);

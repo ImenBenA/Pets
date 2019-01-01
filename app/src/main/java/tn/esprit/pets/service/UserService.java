@@ -169,7 +169,7 @@ public class UserService {
 
     public void addUser(Context context, final String username, final String password, final String email) {
         // Initialize a new RequestQueue instance
-        String Url = "http://" + MySingleton.getIp() + "/PetsWS/addUser.php";
+        String Url = "http://" + MySingleton.getIp() + "/PetsWS/user/addUser.php";
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
 
@@ -216,6 +216,7 @@ public class UserService {
                 params2.put("email", email);
                 params2.put("username", username);
                 params2.put("password", password);
+                params2.put("phone", "2222");
                 params2.put("token",FirebaseInstanceId.getInstance().getToken());
                 return new JSONObject(params2).toString().getBytes();
             }

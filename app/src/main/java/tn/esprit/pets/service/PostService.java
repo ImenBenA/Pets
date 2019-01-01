@@ -179,7 +179,7 @@ try {
 }
      */
 
-    public void addPost(Context context, final String description,final String imageUrl){
+    public void addPost(Context context, final String description,final String imageUrl,final String type){
         String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url,null, new Response.Listener<JSONArray>() {
@@ -204,7 +204,7 @@ try {
                 HashMap<String, String> params2 = new HashMap<String, String>();
                 params2.put("description", description);
                 params2.put("petImage", imageUrl);
-                params2.put("type", "default");
+                params2.put("type", type);
                 params2.put("user_id", "48");
                 params2.put("date", "2018-07-07");
                 return new JSONObject(params2).toString().getBytes();

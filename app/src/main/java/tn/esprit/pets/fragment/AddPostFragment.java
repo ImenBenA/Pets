@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,8 +31,7 @@ public class AddPostFragment extends Fragment {
 
     Button add,addImage;
     EditText etDescription;
-    RadioButton radioButtonL;
-    RadioButton radioButtonF;
+    RadioGroup radioGroup;
     ImageView displayImage;
     Bitmap bitmap;
     PostService ps=new PostService();
@@ -57,8 +57,7 @@ public class AddPostFragment extends Fragment {
         etDescription = root.findViewById(R.id.description);
         addImage = root.findViewById(R.id.addImage);
         displayImage= root.findViewById(R.id.displayImage);
-        radioButtonL = root.findViewById(R.id.looking);
-        radioButtonF = root.findViewById(R.id.found);
+        radioGroup = (RadioGroup) root.findViewById(R.id.type);
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,16 +70,23 @@ public class AddPostFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String radiovalue = ((RadioButton) root.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+                String type="";
+                if (radiovalue.equals("Looking for a pet"))
+                    type="lost";
+                else if (radiovalue.equals("Found a pet"))
+                    type="found";
                 String description = etDescription.getText().toString();
                 String imageUrl =getStringImage(bitmap);
                 imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
                 String data =
                         "{\"description\": \""+description+"\",\n" +
                         "\t\"petImage\": \""+imageUrl+"\",\n" +
-                        "\t\"type\" : \"aa\"\n" +
+                        "\t\"type\" : \""+type+"\"\n" +
                         "}";
 
-                ps.addPost(root.getContext(),description,imageUrl);
+                ps.addPost(root.getContext(),description,imageUrl,type);
+                getFragmentManager().popBackStackImmediate();
             }
         });
         return root;
