@@ -57,9 +57,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_profile, container, false);
-        sharedPreferences = getContext().getSharedPreferences("data", MODE_PRIVATE);
+        sharedPreferences = root.getContext().getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        userId = sharedPreferences.getInt("id", 0);
 
         username = (TextView) root.findViewById(R.id.username);
         usernameTitle = (TextView) root.findViewById(R.id.usernameTitle);
@@ -74,6 +73,7 @@ public class ProfileFragment extends Fragment {
 
         getUserConnectedArray();
 
+        System.out.println(userConnected.getId());
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,10 +89,11 @@ public class ProfileFragment extends Fragment {
                     edit.setText("Save");
                     editing = true;
                 } else {
+                    System.out.println("user id" + userConnected.getId());
                     updateUser(getContext(), usernameEdit.getText().toString(),
                             passwordEdit.getText().toString(),
                             emailEdit.getText().toString(),
-                            String.valueOf(userId),
+                            userConnected.getId()+"",
                             phoneEdit.getText().toString());
 
                     username.setVisibility(View.VISIBLE);
@@ -148,6 +149,11 @@ public class ProfileFragment extends Fragment {
                         phoneEdit.setText(phonel);
                         editor.putString("username",usernamel);
                         editor.putString("password",passwordl);
+                        editor.commit();
+                        MainActivity.userConnected.setPassword(passwordl);
+                        MainActivity.userConnected.setEmail(emaill);
+                        MainActivity.userConnected.setPhone(phonel);
+
                     }
                 },
                 new Response.ErrorListener() {

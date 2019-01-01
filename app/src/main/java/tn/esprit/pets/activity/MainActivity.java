@@ -69,46 +69,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getApplicationContext();
-        //Log.e("user co" , LoginActivity.userConnected.toString());
-        //initData();
-            /*String getAllURL = "http://10.0.2.2:18080/WSPets-web/api/user/all";
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            JsonObjectRequest objectRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    getAllURL,
-                    null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.e("rest response", response.toString());
-                            System.out.println("json response " + response.toString());
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("rest error", error.toString());
-                        }
-                    }
-            );
-            objectRequest.setRetryPolicy(new RetryPolicy() {
-                @Override
-                public int getCurrentTimeout() {
-                    return 50000;
-                }
-
-                @Override
-                public int getCurrentRetryCount() {
-                    return 50000;
-                }
-
-                @Override
-                public void retry(VolleyError error) throws VolleyError {
-
-                }
-            });
-            requestQueue.add(objectRequest);*/
-
             /*textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
             textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
                 @Override
@@ -146,9 +106,11 @@ public class MainActivity extends AppCompatActivity {
         userId = sharedPreferences.getInt("id", 0);
         String name=sharedPreferences.getString("username", "");
         String pass=sharedPreferences.getString("password", "");
+        System.out.println(name + " and " + pass + " and id : "+userId);
         getUserConnected2(userId,name,pass);
         if (userConnected!=null)
         {
+            System.out.println("mahouch null ye zebi");
             if(!userConnected.getToken().equals(FirebaseInstanceId.getInstance().getToken()))
                 updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
         }
@@ -321,55 +283,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }*/
 
-    public void getUserConnected(final int id) {
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        Log.e("requrl", getUserURL + String.valueOf(id));
-        JsonObjectRequest objectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                getUserURL + String.valueOf(id),
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("usercon", response.toString());
-                        /*try {
-                            int id = response.getInt("id");
-                            String lusername = response.getString("username");
-                            String lpassword = response.getString("password");
-                            String email = response.getString("email");
-                            String picture = response.getString("picture");
-                            userConnected = new User(id,lusername,lpassword,email,picture);
-                            Log.e("usercon", response.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }*/
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("usernoncon", error.toString());
-                    }
-                }
-        );
-        /*objectRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 2500;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 2500;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-            }
-        });*/
-        //MySingleton.getInstance(this).addToRequestQueue(objectRequest);
-        requestQueue.add(objectRequest);
-    }
 
     public void getUserConnected2(final int id, final String name, final String pass) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -382,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("json response", response.toString());
 
                         try {
-                            if(response.toString().length()>0){
+                            if(!response.toString().equals("{}")){
                                 JSONObject jsonObject = response;
                                 int id = Integer.parseInt(jsonObject.getString("id"));
                                 String username = jsonObject.getString("username");
@@ -390,9 +303,11 @@ public class MainActivity extends AppCompatActivity {
                                 String email = jsonObject.getString("email");
                                 String phone = jsonObject.getString("phone");
                                 String token= jsonObject.getString("token");
-                                if (username.equals(name)&&password.equals(pass))
+                                if (username.equals(name) && password.equals(pass)){
                                     userConnected = new User(id,username,password, email, phone,token);
-                                    Log.e("userfound", userConnected.toString());
+                                    System.out.println("yeeess");
+                                }
+                                    //Log.e("userfound", userConnected.toString());
                                 }
 
                             } catch (JSONException e1) {
@@ -450,5 +365,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
+    }
+    public static void setUserConnected(User user){
+        userConnected=user;
     }
 }
