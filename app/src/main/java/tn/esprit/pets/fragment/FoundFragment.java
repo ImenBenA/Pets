@@ -1,12 +1,15 @@
 package tn.esprit.pets.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import tn.esprit.pets.R;
+import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.PostsAdapter;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
@@ -32,10 +36,12 @@ import tn.esprit.pets.service.MySingleton;
 
 public class FoundFragment extends Fragment {
 
-    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts";
+    private String getAllURL = "http://" + MySingleton.getIp() + "/PetsWS/post/allPosts.php";
     static ArrayList<Post> found = new ArrayList<>();
     View root;
     PostsAdapter itemsAdapter;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     public FoundFragment() {
     }
@@ -48,6 +54,25 @@ public class FoundFragment extends Fragment {
         ListView listView = (ListView) root.findViewById(R.id.posts);
         listView.setAdapter(itemsAdapter);
         getPosts(root.getContext());
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                Fragment fragment = null;
+                fragment = new PostDetailsFragment();
+                Bundle b = new Bundle();
+
+                b.putInt("index", position);
+                fragment.setArguments(b);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
+                editor = sharedPreferences.edit();
+                editor.putInt("posPost", position);
+                editor.commit();
+            }
+        });*/
         return root;
     }
 
@@ -78,7 +103,7 @@ public class FoundFragment extends Fragment {
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                   // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
+                                    // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
                                     Post post = new Post(id, description, imageUrl, new User(), type, date);
                                     found.add(post);

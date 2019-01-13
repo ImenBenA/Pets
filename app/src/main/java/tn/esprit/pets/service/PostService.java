@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.PostsAdapter;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.entity.User;
@@ -205,7 +206,7 @@ try {
                 params2.put("description", description);
                 params2.put("petImage", imageUrl);
                 params2.put("type", type);
-                params2.put("user_id", "48");
+                params2.put("user_id", MainActivity.userConnected.getId() + "");
                 params2.put("date", "2018-07-07");
                 return new JSONObject(params2).toString().getBytes();
             }
