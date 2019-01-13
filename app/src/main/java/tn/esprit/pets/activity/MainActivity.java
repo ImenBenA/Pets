@@ -42,6 +42,7 @@ import tn.esprit.pets.fragment.FoundFragment;
 import tn.esprit.pets.fragment.LostAndFoundFragment;
 import tn.esprit.pets.fragment.LostFragment;
 import tn.esprit.pets.fragment.MessageFragment;
+import tn.esprit.pets.fragment.NotificationFragment;
 import tn.esprit.pets.fragment.ProfileFragment;
 import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.service.UserService;
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new MessageFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new NotificationFragment()).commit();
                     }
                 };
                 if (runnable != null) {

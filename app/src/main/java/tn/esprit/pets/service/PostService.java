@@ -206,7 +206,7 @@ try {
                 params2.put("description", description);
                 params2.put("petImage", imageUrl);
                 params2.put("type", type);
-                params2.put("user_id", MainActivity.userConnected.getId() + "");
+                params2.put("user_id", MainActivity.userConnected.getId()+"");
                 params2.put("date", "2018-07-07");
                 return new JSONObject(params2).toString().getBytes();
             }
