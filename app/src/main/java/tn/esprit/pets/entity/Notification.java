@@ -9,6 +9,7 @@ public class Notification {
     private String body;
     private Date date;
     private User user;
+    private Post post;
 
     public Notification(String title, String body, Date date, User user) {
         this.title = title;
@@ -17,12 +18,13 @@ public class Notification {
         this.user = user;
     }
 
-    public Notification(int id, String title, String body, Date date, User user) {
+    public Notification(int id, String title, String body, Date date, User user,Post post) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.date = date;
         this.user = user;
+        this.post = post;
     }
 
     public int getId() {
@@ -63,5 +65,13 @@ public class Notification {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

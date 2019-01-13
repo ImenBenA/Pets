@@ -32,7 +32,7 @@ import tn.esprit.pets.service.MySingleton;
 
 public class FoundFragment extends Fragment {
 
-    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts.php";
     static ArrayList<Post> found = new ArrayList<>();
     View root;
     PostsAdapter itemsAdapter;
