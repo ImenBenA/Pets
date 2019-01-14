@@ -79,25 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     final String lusername = username.getText().toString();
                     final String lpassword = password.getText().toString();
-                    isAuthentified(lusername, lpassword,intent);
-                    /*mRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isAuthentified) {
-                                isConnected = true;
-                                editor.putBoolean("isConnect", true);
-                                editor.commit();
-                                startActivity(intent);
-                                Log.e("is auth and is co", isAuthentified + " "+ isConnected + " ");
-                            }
-                            else {
-                                Log.e("is neither", isAuthentified +"");
-                            }
-                        }
-                    };
-                    if (mRunnable != null) {
-                        mHandler.post(mRunnable);
-                    }*/
+                    isAuthentified(lusername, lpassword, intent);
                 }
             });
 

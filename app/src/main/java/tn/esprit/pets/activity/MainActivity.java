@@ -44,24 +44,21 @@ import tn.esprit.pets.fragment.LostFragment;
 import tn.esprit.pets.fragment.MessageFragment;
 import tn.esprit.pets.fragment.NotificationFragment;
 import tn.esprit.pets.fragment.ProfileFragment;
+import tn.esprit.pets.fragment.SettingsFragment;
 import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.service.UserService;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*private FeatureCoverFlow coverFlow;
-    private PostAdapter postAdapter;
 
-    private TextSwitcher textSwitcher;*/
     public static User userConnected;
-    //public static List<Post> posts = new ArrayList<>();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private String getUserURL = "http://"+MySingleton.getIp()+"/PetsWS/user/userById.php?id=";
     private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
     int userId;
     GridLayout mainGrid;
-    CardView lost, found, profile, settings, lostAndFound, messages;
+    CardView lost, found, profile, settings, lostAndFound, notifications;
     Runnable runnable;
     Handler handler = new Handler();
 
@@ -70,47 +67,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getApplicationContext();
-            /*textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
-            textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-                @Override
-                public View makeView() {
-                    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-                    TextView text = (TextView) inflater.inflate(R.layout.coverflow_title, null);
-                    return text;
-                }
-            });
-            Animation in = AnimationUtils.loadAnimation(this, R.anim.slide_in_top);
-            Animation out = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom);
-            textSwitcher.setInAnimation(in);
-            textSwitcher.setOutAnimation(out);
-
-            postAdapter = new PostAdapter(posts, this);
-            coverFlow = (FeatureCoverFlow) findViewById(R.id.cover_flow);
-            coverFlow.setAdapter(postAdapter);
-
-            coverFlow.setOnScrollPositionListener(new FeatureCoverFlow.OnScrollPositionListener() {
-                @Override
-                public void onScrolledToPosition(int position) {
-                    textSwitcher.setText(posts.get(position).getDescription());
-                }
-
-                @Override
-                public void onScrolling() {
-
-                }
-            });*/
-
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
         sharedPreferences = this.getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
-        String name=sharedPreferences.getString("username", "");
-        String pass=sharedPreferences.getString("password", "");
-        System.out.println(name + " and " + pass + " and id : "+userId);
-        getUserConnected2(userId,name,pass);
-        if (userConnected!=null)
-        {
+        String name = sharedPreferences.getString("username", "");
+        String pass = sharedPreferences.getString("password", "");
+        //System.out.println(name + " and " + pass + " and id : "+userId);
+        getUserConnected(userId, name, pass);
+        if (userConnected!=null) {
             System.out.println("mahouch null ye zebi");
             if(!userConnected.getToken().equals(FirebaseInstanceId.getInstance().getToken()))
                 updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
@@ -165,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        messages = (CardView) findViewById(R.id.messages);
-        messages.setOnClickListener(new View.OnClickListener() {
+        notifications = (CardView) findViewById(R.id.notifications);
+        notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -174,6 +138,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new NotificationFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
+                }
+            }
+        });
+        settings = (CardView) findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new SettingsFragment()).commit();
                     }
                 };
                 if (runnable != null) {
@@ -189,19 +169,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();*/
-
-        /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);*/
-    }
-
-    private void initData() {
-        UserService us = new UserService();
-        us.getAllUsers(this);
     }
 
     @Override
@@ -214,78 +181,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    /*@SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        //if (id == R.id.nav_camera) {
-            // Handle the camera action
-            /*Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    // update the main content by replacing fragments
-                    android.support.v4.app.Fragment fragment = getHomeFragment();
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                            android.R.anim.fade_out);
-                    fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-                    fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
-
-            // If mPendingRunnable is not null, then add to the message queue
-            if (mPendingRunnable != null) {
-                mHandler.post(mPendingRunnable);
-                sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("posActualites", -1);
-                editor.putInt("posCinema", -1);
-                editor.commit();
-            }
-
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
-
-    public void getUserConnected2(final int id, final String name, final String pass) {
+    public void getUserConnected(final int id, final String name, final String pass) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 getUserURL+id,

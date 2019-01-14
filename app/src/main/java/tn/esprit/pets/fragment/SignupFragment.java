@@ -3,7 +3,6 @@ package tn.esprit.pets.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -32,19 +30,8 @@ public class SignupFragment extends Fragment {
 
     EditText username, password, email, phoneNumber;
     Button signup;
-    UserService us=new UserService();
 
     public SignupFragment() {
-    }
-
-    public static SignupFragment newInstance(String param1, String param2) {
-        SignupFragment fragment = new SignupFragment();
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -64,8 +51,8 @@ public class SignupFragment extends Fragment {
                 String pass = password.getText().toString();
                 String mail = email.getText().toString();
                 String phone = phoneNumber.getText().toString();
-                //if (name.length()>5 && verifPassword(pass) && verifMail(mail)){
-                    //us.addUser(root.getContext(), name, pass, mail, phone);
+                //TODO
+                //if (/*name.length()>5*/ && verifPassword(pass) && verifMail(mail) && verifPhoneNumber(phoneNumber){
                     addUser(root.getContext(), name, pass, mail, phone);
                     getFragmentManager().popBackStack();
                // }
@@ -75,45 +62,47 @@ public class SignupFragment extends Fragment {
         });
         return root;
     }
-    public boolean verifMail(String a) {
 
+    public boolean verifPhoneNumber(String phoneNumber) {
+        //TODO
+        return true;
+    }
+
+    public boolean verifMail(String mail) {
         Boolean valide = false;
         int i, j, k;
-        for (j = 1; j < a.length(); j++) {
-            if (a.charAt(j) == '@') {
-                if (j < a.length() - 4) {
-                    for (k = j; k < a.length() - 2; k++) {
-                        if (a.charAt(k) == '.') {
+        for (j = 1; j < mail.length(); j++) {
+            if (mail.charAt(j) == '@') {
+                if (j < mail.length() - 4) {
+                    for (k = j; k < mail.length() - 2; k++) {
+                        if (mail.charAt(k) == '.') {
                             valide = true;
                         }
                     }
                 }
             }
         }
-
         return valide;
     }
-    public boolean verifPassword(String password)
-    {
+
+    public boolean verifPassword(String password) {
         boolean test=false;
         boolean test2=false;
         int i;
-        for (i=0;i<password.length();i++)
-        {
-            if(Character.isDigit(password.charAt(i)))
-            {
+        for (i=0;i<password.length();i++) {
+            if(Character.isDigit(password.charAt(i))) {
                 test=true;
                 i=password.length();
                 //System.out.println("test 1 :" +test);
             }
         }
-        if(password.length()>5)
-        {
+        if(password.length()>5) {
             test2=true;
             //System.out.println(test2);
         }
-        if (test==test2)
+        if (test==test2) {
             return test;
+        }
         return false;
     }
 
