@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
     int userId;
     GridLayout mainGrid;
-    CardView lost, found, profile, settings, lostAndFound, notifications;
+    CardView lost, found, profile, settings, notifications, addPost;
     Runnable runnable;
     Handler handler = new Handler();
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
         }
 
-        mainGrid = (GridLayout) findViewById(R.id.mainGrid);
+        //mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         lost = (CardView) findViewById(R.id.lost);
         lost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,13 +161,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        addPost = (CardView) findViewById(R.id.addPost);
+        addPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").add(R.id.drawer_layout, new AddPostFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
+                }
+            }
+        });
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getSupportFragmentManager().beginTransaction().addToBackStack("fragment").add(R.id.drawer_layout, new AddPostFragment()).commit();
             }
-        });
+        });*/
 
     }
 

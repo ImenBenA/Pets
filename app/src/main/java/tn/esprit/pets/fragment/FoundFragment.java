@@ -70,7 +70,7 @@ public class FoundFragment extends Fragment {
                                     int id = jsonObject.getInt("id");
                                     String description = jsonObject.getString("description");
                                     String imageUrl = jsonObject.getString("petImage");
-
+                                    String link ="http://"+MySingleton.getIp()+"/PetsWS/post/"+imageUrl;
                                     DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     Date date = null;
                                     try {
@@ -80,7 +80,7 @@ public class FoundFragment extends Fragment {
                                     }
                                    // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
-                                    Post post = new Post(id, description, imageUrl, new User(), type, date);
+                                    Post post = new Post(id, description, link, new User(), type, date);
                                     found.add(post);
                                 }
 

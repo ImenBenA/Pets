@@ -30,11 +30,6 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_settings, container, false);
@@ -46,7 +41,7 @@ public class SettingsFragment extends Fragment {
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPreferences = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+                sharedPreferences = getActivity().getSharedPreferences("userdata", MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.putBoolean("isConnect", false);
                 editor.commit();
