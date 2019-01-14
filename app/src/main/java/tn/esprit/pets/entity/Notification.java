@@ -11,6 +11,10 @@ public class Notification {
     private User user;
     private Post post;
 
+    public Notification() {
+
+    }
+
     public Notification(String title, String body, Date date, User user) {
         this.title = title;
         this.body = body;
