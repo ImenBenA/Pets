@@ -167,13 +167,10 @@ public class UserService {
         return ok;
     }
 
-    public void addUser(Context context, final String username, final String password, final String email) {
-        // Initialize a new RequestQueue instance
+    public void addUser(Context context, final String username, final String password, final String email, final String phone) {
         String Url = "http://" + MySingleton.getIp() + "/PetsWS/user/addUser.php";
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-
-        // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.POST,
                 Url,
@@ -191,9 +188,6 @@ public class UserService {
                             for (int i = 0; i < response.length(); i++) {
                                 // Get current json object
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                // Get the current student (json object) data
-                                String lusername = jsonObject.getString("username");
-                                String lpassword = jsonObject.getString("password");
 
                             }
                         } catch (JSONException e) {
@@ -216,7 +210,7 @@ public class UserService {
                 params2.put("email", email);
                 params2.put("username", username);
                 params2.put("password", password);
-                params2.put("phone", "2222");
+                params2.put("phone", phone);
                 params2.put("token",FirebaseInstanceId.getInstance().getToken());
                 return new JSONObject(params2).toString().getBytes();
             }

@@ -44,7 +44,7 @@ public class PostDetailsFragment extends Fragment {
     int id_post;
     TextView description;
     TextView date;
-    ImageView image;
+    ImageView image; 
 
     String findPostByIdURL = "http://" + MySingleton.getIp() + "/PetsWS/post/postById.php";
 

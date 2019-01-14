@@ -1,19 +1,36 @@
 package tn.esprit.pets.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import tn.esprit.pets.R;
+import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.service.UserService;
 
 public class SignupFragment extends Fragment {
 
-    EditText username,password,email;
+    EditText username, password, email, phoneNumber;
     Button signup;
     UserService us=new UserService();
 
@@ -38,6 +55,7 @@ public class SignupFragment extends Fragment {
         password= root.findViewById(R.id.password);
         email= root.findViewById(R.id.email);
         signup= root.findViewById(R.id.login);
+        phoneNumber = root.findViewById(R.id.phone);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,8 +63,10 @@ public class SignupFragment extends Fragment {
                 String name=username.getText().toString();
                 String pass = password.getText().toString();
                 String mail = email.getText().toString();
+                String phone = phoneNumber.getText().toString();
                 //if (name.length()>5 && verifPassword(pass) && verifMail(mail)){
-                    us.addUser(root.getContext(),name,pass,mail);
+                    //us.addUser(root.getContext(), name, pass, mail, phone);
+                    addUser(root.getContext(), name, pass, mail, phone);
                     getFragmentManager().popBackStack();
                // }
                 //else
@@ -95,5 +115,43 @@ public class SignupFragment extends Fragment {
         if (test==test2)
             return test;
         return false;
+    }
+
+    public void addUser(Context context, final String username, final String password, final String email, final String phone) {
+        String Url = "http://" + MySingleton.getIp() + "/PetsWS/user/addUser.php";
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.POST,
+                Url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }
+        ) {
+            @Override
+            public byte[] getBody() {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("email", email);
+                params2.put("username", username);
+                params2.put("password", password);
+                params2.put("phone", phone);
+                params2.put("token", FirebaseInstanceId.getInstance().getToken());
+                return new JSONObject(params2).toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        requestQueue.add(jsonArrayRequest);
     }
 }
