@@ -1,6 +1,7 @@
 package tn.esprit.pets.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,8 +45,11 @@ public class PostDetailsFragment extends Fragment {
     View root;
     int id_post;
     TextView description;
-    TextView date;
-    ImageView image; 
+    TextView date, username;
+    ImageView image;
+    Button call;
+    ImageView typeImage;
+
 
     String findPostByIdURL = "http://" + MySingleton.getIp() + "/PetsWS/post/postById.php";
 
@@ -60,6 +65,9 @@ public class PostDetailsFragment extends Fragment {
         description = (TextView) root.findViewById(R.id.post_description);
         image = (ImageView) root.findViewById(R.id.post_image);
         date = (TextView) root.findViewById(R.id.post_date);
+        call = (Button) root.findViewById(R.id.call);
+        username = (TextView) root.findViewById(R.id.username);
+        typeImage = (ImageView) root.findViewById(R.id.type);
 
         findPostById(root.getContext(), id_post);
 
@@ -84,13 +92,41 @@ public class PostDetailsFragment extends Fragment {
                                 String descriptionl = jsonObject.getString("description");
                                 String petImage = jsonObject.getString("petImage");
                                 String type = jsonObject.getString("type");
-                                //String user_id = jsonObject.getString("user_id");
-                                User user = new User();
                                 String datel= jsonObject.getString("date");
+
+                                JSONObject userObject = jsonObject.getJSONObject("user_id");
+                                final User user = new User();
+                                user.setId(Integer.parseInt(userObject.getString("id")));
+                                user.setUsername(userObject.getString("username"));
+                                user.setToken(userObject.getString("token"));
+                                user.setPhone(userObject.getString("phone"));
+                                user.setEmail(userObject.getString("email"));
+                                Log.e("USERINFO", userObject.toString());
 
                                 date.setText(datel);
                                 description.setText(descriptionl);
                                 Picasso.with(getContext()).load("http://" + MySingleton.getIp() + "/PetsWS/post/"+petImage).into(image);
+                                username.setText(user.getUsername());
+                                if(type.equals("lost")) {
+                                    typeImage.setImageResource(R.drawable.l);
+                                    //typeImage.setBackgroundColor(R.drawable.cercleshape_pink);
+                                }else {
+                                    typeImage.setImageResource(R.drawable.f);
+                                    //typeImage.setBackgroundColor(R.drawable.cercleshape_green);
+                                }
+
+                                call.setText("Call " + user.getUsername().toString());
+                                call.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                        callIntent.setData(Uri.parse("tel:"+ user.getPhone()));
+                                        try {
+                                            startActivity(callIntent);
+                                        } catch (SecurityException se) {
+                                        }
+                                    }
+                                });
                             }
                         } catch (JSONException e) {
                             Log.e("found p exc",   "");
