@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import tn.esprit.pets.R;
+import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.PostsAdapter;
 import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
@@ -47,10 +48,17 @@ public class FoundFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_post, container, false);
+        found.clear();
+        for (Post p: MainActivity.listPost) {
+            if (p.getType().equals("found")){
+                found.add(p);
+            }
+        }
+        System.out.println(found.size());
         itemsAdapter = new PostsAdapter(root.getContext(), found);
         ListView listView = (ListView) root.findViewById(R.id.posts);
         listView.setAdapter(itemsAdapter);
-        getPosts(root.getContext());
+        //getPosts(root.getContext());
         return root;
     }
 

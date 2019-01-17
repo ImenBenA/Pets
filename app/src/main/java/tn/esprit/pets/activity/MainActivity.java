@@ -30,12 +30,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import tn.esprit.pets.R;
+import tn.esprit.pets.database.DBHelper;
+import tn.esprit.pets.entity.Notification;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.Town;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.fragment.AddPostFragment;
 import tn.esprit.pets.fragment.FoundFragment;
@@ -47,26 +55,34 @@ import tn.esprit.pets.fragment.ProfileFragment;
 import tn.esprit.pets.fragment.SettingsFragment;
 import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.service.UserService;
+import tn.esprit.pets.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
 
     public static User userConnected;
+    public static List<Post> listPost = new ArrayList<>();
+    public static List<Notification> listNotification = new ArrayList<>();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private String getUserURL = "http://"+MySingleton.getIp()+"/PetsWS/user/userById.php?id=";
     private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
+    private static String getAllPostsURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts.php";
+    private static String getAllNotificationsURL = "http://"+MySingleton.getIp()+"/PetsWS/notification/allNotification.php?id=";
     int userId;
     GridLayout mainGrid;
     CardView lost, found, profile, settings, notifications, addPost;
     Runnable runnable;
     Handler handler = new Handler();
+    static DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getApplicationContext();
+        dbHelper = new DBHelper(getApplicationContext());
+        listPost = dbHelper.getAllPosts();
         sharedPreferences = this.getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
@@ -74,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         String pass = sharedPreferences.getString("password", "");
         //System.out.println(name + " and " + pass + " and id : "+userId);
         getUserConnected(userId, name, pass);
+        init(getApplicationContext());
         if (userConnected!=null) {
-            System.out.println("mahouch null ye zebi");
             if(!userConnected.getToken().equals(FirebaseInstanceId.getInstance().getToken()))
                 updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
         }
@@ -218,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
                                 String token= jsonObject.getString("token");
                                 if (username.equals(name) && password.equals(pass)){
                                     userConnected = new User(id,username,password, email, phone,token);
-                                    System.out.println("yeeess");
                                 }
                                     //Log.e("userfound", userConnected.toString());
                                 }
@@ -282,4 +297,126 @@ public class MainActivity extends AppCompatActivity {
     public static void setUserConnected(User user){
         userConnected=user;
     }
+    public static void init(Context context){
+        getPosts(context);
+        getNotifications(context);
+    }
+    public static void getPosts(Context context){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                getAllPostsURL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("json response", response.toString());
+                        try {
+                            dbHelper.removeAllPosts();
+                            listPost.clear();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                String type = jsonObject.getString("type");
+                                    int id = jsonObject.getInt("id");
+                                    String description = jsonObject.getString("description");
+                                    String imageUrl = jsonObject.getString("petImage");
+                                    String link ="http://"+MySingleton.getIp()+"/PetsWS/post/"+imageUrl;
+                                    //String type = jsonObject.getString("type");
+                                    Utils utils = new Utils();
+                                    String petTypeString = jsonObject.getString("petType");
+                                    PetType petType;
+                                    petType = utils.stringToPetType(petTypeString);
+                                    String townString = jsonObject.getString("town");
+                                    Town town;
+                                    town = utils.stringToTown(townString);
+
+                                    DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date date = null;
+                                    try {
+                                        date = (Date) simpleDateFormat.parse(jsonObject.getString("date"));
+                                        //System.out.println(date);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    JSONObject userObject = (JSONObject) jsonObject.get("user_id");
+                                    User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
+                                    Post post = new Post(id, description, link, user , type, date, petType, town);
+                                    dbHelper.insertPost(post);
+                                    listPost.add(post);
+                                }
+                            //System.out.println("lista mel sqlite : " + dbHelper.getAllPosts().size());
+                            //Log.v("posts response", lost.toString());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("json error", error.toString());
+                    }
+                }
+        );
+        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
+    }
+    public static void getNotifications(Context context){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                getAllNotificationsURL+50,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("json response", response.toString());
+                        try {
+                            dbHelper.getAllNotifications();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                String title = jsonObject.getString("title");
+                                int id = jsonObject.getInt("id");
+                                String body = jsonObject.getString("body");
+                                //String type = jsonObject.getString("type");
+                                DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date = null;
+                                try {
+                                    date = (Date) simpleDateFormat.parse(jsonObject.getString("date"));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                JSONObject userObject = (JSONObject) jsonObject.get("user_id");
+                                JSONObject postObject = (JSONObject) jsonObject.get("post_id");
+                                Utils utils = new Utils();
+                                String petTypeString = postObject.getString("petType");
+                                PetType petType;
+                                petType = utils.stringToPetType(petTypeString);
+                                String townString = postObject.getString("town");
+                                Town town;
+                                town = utils.stringToTown(townString);
+
+                                Post post = new Post(postObject.getInt("id"),postObject.getString("description"),postObject.getString("petImage"), null, postObject.getString("type"), null, petType, town);
+                                //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
+                                User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),"");
+                                Notification notif = new Notification(id,title,body,date,user,post);
+                                listNotification.add(notif);
+                                dbHelper.insertNotification(notif);
+
+                            }
+                            System.out.println("notif mel db : "+dbHelper.getAllNotifications().size());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("json error", error.toString());
+                    }
+                }
+        );
+        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
+    }
+
 }

@@ -27,8 +27,11 @@ import java.util.Map;
 
 import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.PostsAdapter;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.Town;
 import tn.esprit.pets.entity.User;
+import tn.esprit.pets.utils.Utils;
 
 public class PostService {
     private String getAllURL = "http://"+MySingleton.getIp()+":18080/WSPets-web/api/post/all";
@@ -183,7 +186,7 @@ try {
 }
      */
 
-    public void addPost(Context context, final String description, final String imageUrl, final String type, final String town, final String petType){
+    public void addPost(final Context context, final String description, final String imageUrl, final String type, final String town, final String petType){
         String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url,null, new Response.Listener<JSONArray>() {
@@ -191,8 +194,11 @@ try {
             public void onResponse(JSONArray response) {
 
                 try {
+
                     JSONObject jsonObject = response.getJSONObject(0);
                 } catch (JSONException e) {
+                    MainActivity.init(context);
+                    System.out.println("poooooooooooooooooooo");
                     e.printStackTrace();
                 }
 

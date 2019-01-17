@@ -89,7 +89,7 @@ public class AddPostFragment extends Fragment {
                 String description = etDescription.getText().toString();
                 String imageUrl =getStringImage(bitmap);
                 imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
-                ps.addPost(root.getContext(),description,imageUrl,type, townString, petString);
+                ps.addPost(getContext(),description,imageUrl,type, townString, petString);
                 getFragmentManager().popBackStackImmediate();
             }
         });
@@ -98,7 +98,7 @@ public class AddPostFragment extends Fragment {
 
     public String getStringImage(Bitmap bm){
         ByteArrayOutputStream ba=new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,ba);
+        bm.compress(Bitmap.CompressFormat.JPEG,50,ba);
         byte[] imageByte= ba.toByteArray();
         String encode=Base64.encodeToString(imageByte,Base64.DEFAULT);
         return  encode;
@@ -117,4 +117,5 @@ public class AddPostFragment extends Fragment {
             }
         }
     }
+
 }

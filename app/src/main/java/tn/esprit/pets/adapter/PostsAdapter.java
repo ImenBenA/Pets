@@ -44,6 +44,7 @@ public class PostsAdapter extends ArrayAdapter<Post>{
         description.setText(post.getDescription());
 
         ImageView image = (ImageView) convertView.findViewById(R.id.post_image);
+        //System.out.println(post.getImageUrl());
         Picasso.with(getContext()).load(post.getImageUrl()).into(image);
 
         TextView date = (TextView) convertView.findViewById(R.id.post_date);

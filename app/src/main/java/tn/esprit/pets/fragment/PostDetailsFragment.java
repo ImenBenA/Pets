@@ -69,8 +69,8 @@ public class PostDetailsFragment extends Fragment {
         image = (ImageView) root.findViewById(R.id.post_image);
         date = (TextView) root.findViewById(R.id.post_date);
         call = (Button) root.findViewById(R.id.call);
-        username = (TextView) root.findViewById(R.id.username);
-        typeImage = (ImageView) root.findViewById(R.id.type);
+        //username = (TextView) root.findViewById(R.id.username);
+        //typeImage = (ImageView) root.findViewById(R.id.type);
 
         findPostById(root.getContext(), id_post);
 
@@ -117,12 +117,12 @@ public class PostDetailsFragment extends Fragment {
                                 date.setText(datel);
                                 description.setText(descriptionl);
                                 Picasso.with(getContext()).load("http://" + MySingleton.getIp() + "/PetsWS/post/"+petImage).into(image);
-                                username.setText(user.getUsername());
+                                //username.setText(user.getUsername());
                                 if(type.equals("lost")) {
-                                    typeImage.setImageResource(R.drawable.l);
+                                    //typeImage.setImageResource(R.drawable.l);
                                     //typeImage.setBackgroundColor(R.drawable.cercleshape_pink);
                                 }else {
-                                    typeImage.setImageResource(R.drawable.f);
+                                    //typeImage.setImageResource(R.drawable.f);
                                     //typeImage.setBackgroundColor(R.drawable.cercleshape_green);
                                 }
 
