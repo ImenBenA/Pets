@@ -28,9 +28,12 @@ import tn.esprit.pets.R;
 import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.NotificationAdapter;
 import tn.esprit.pets.entity.Notification;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.Town;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.service.MySingleton;
+import tn.esprit.pets.utils.Utils;
 
 public class NotificationFragment extends Fragment {
     private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/notification/allNotification.php?id="+MainActivity.userConnected.getId();
@@ -76,7 +79,15 @@ public class NotificationFragment extends Fragment {
                                     }
                                     JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     JSONObject postObject = (JSONObject) jsonObject.get("post_id");
-                                    Post post = new Post(postObject.getInt("id"),postObject.getString("description"),postObject.getString("petImage"), null, postObject.getString("type"), null);
+                                Utils utils = new Utils();
+                                String petTypeString = postObject.getString("petType");
+                                PetType petType;
+                                petType = utils.stringToPetType(petTypeString);
+                                String townString = postObject.getString("town");
+                                Town town;
+                                town = utils.stringToTown(townString);
+
+                                Post post = new Post(postObject.getInt("id"),postObject.getString("description"),postObject.getString("petImage"), null, postObject.getString("type"), null, petType, town);
                                     //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
                                     User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),"");
                                     Notification notif = new Notification(id,title,body,date,user,post);

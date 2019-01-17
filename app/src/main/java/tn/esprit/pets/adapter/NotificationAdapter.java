@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import tn.esprit.pets.R;
 import tn.esprit.pets.entity.Notification;
@@ -30,7 +32,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         title.setText(notification.getTitle());
         body.setText(notification.getBody());
         TextView date = (TextView) convertView.findViewById(R.id.notification_date);
-        date.setText(notification.getDate().toString());
+        date.setText(new SimpleDateFormat("dd MM yyyy").format(notification.getDate()));
         //image.setImageResource(R.drawable.lost);
         //Picasso.get().load(notification.getImageUrl()).resize(50, 50).centerCrop().into(image);
 

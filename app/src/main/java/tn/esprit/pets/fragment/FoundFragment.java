@@ -26,9 +26,12 @@ import java.util.Date;
 
 import tn.esprit.pets.R;
 import tn.esprit.pets.adapter.PostsAdapter;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.Town;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.service.MySingleton;
+import tn.esprit.pets.utils.Utils;
 
 public class FoundFragment extends Fragment {
 
@@ -71,6 +74,13 @@ public class FoundFragment extends Fragment {
                                     String description = jsonObject.getString("description");
                                     String imageUrl = jsonObject.getString("petImage");
                                     String link ="http://"+MySingleton.getIp()+"/PetsWS/post/"+imageUrl;
+                                    Utils utils = new Utils();
+                                    String petTypeString = jsonObject.getString("petType");
+                                    PetType petType;
+                                    petType = utils.stringToPetType(petTypeString);
+                                    String townString = jsonObject.getString("town");
+                                    Town town;
+                                    town = utils.stringToTown(townString);
                                     DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     Date date = null;
                                     try {
@@ -78,9 +88,9 @@ public class FoundFragment extends Fragment {
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                   // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
+                                    // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
                                     //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
-                                    Post post = new Post(id, description, link, new User(), type, date);
+                                    Post post = new Post(id, description, link, new User(), type, date, petType, town);
                                     found.add(post);
                                 }
 

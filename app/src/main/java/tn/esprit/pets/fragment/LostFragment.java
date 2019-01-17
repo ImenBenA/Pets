@@ -27,9 +27,12 @@ import java.util.Date;
 
 import tn.esprit.pets.R;
 import tn.esprit.pets.adapter.PostsAdapter;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.Town;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.service.MySingleton;
+import tn.esprit.pets.utils.Utils;
 
 public class LostFragment extends Fragment {
 
@@ -73,6 +76,14 @@ public class LostFragment extends Fragment {
                                     String imageUrl = jsonObject.getString("petImage");
                                     String link ="http://"+MySingleton.getIp()+"/PetsWS/post/"+imageUrl;
                                     //String type = jsonObject.getString("type");
+                                    Utils utils = new Utils();
+                                    String petTypeString = jsonObject.getString("petType");
+                                    PetType petType;
+                                    petType = utils.stringToPetType(petTypeString);
+                                    String townString = jsonObject.getString("town");
+                                    Town town;
+                                    town = utils.stringToTown(townString);
+
                                     DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     Date date = null;
                                     try {
@@ -82,7 +93,7 @@ public class LostFragment extends Fragment {
                                     }
                                     System.out.println(link);
                                     JSONObject userObject = (JSONObject) jsonObject.get("user_id");
-                                    Post post = new Post(id, description, link, new User(), type, date);
+                                    Post post = new Post(id, description, link, new User(), type, date, petType, town);
                                     User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
                                     lost.add(post);
                                 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/add_frame"
@@ -127,6 +127,22 @@
 
             </LinearLayout>
 
+            <Spinner
+                android:id="@+id/towns"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/towns"
+                />
+
+            <Spinner
+                android:id="@+id/pet_type"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/pet_type"
+                />
+
         </LinearLayout>
 
         <Button
@@ -150,4 +166,4 @@
 
 
 
-</RelativeLayout>
+</ScrollView>

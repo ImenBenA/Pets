@@ -17,6 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,7 +70,7 @@ public class PostService {
         return posts;
     }
 
-    public void getAllPosts(Context context, final PostsAdapter p) {
+    /*public void getAllPosts(Context context, final PostsAdapter p) {
         // Initialize a new RequestQueue instance
         //RequestQueue requestQueue = Volley.newRequestQueue(context);
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
@@ -128,7 +131,7 @@ public class PostService {
         //Log.v("posts", list.toString());
         //System.out.println("size : "+list.size());
         //return list;
-    }
+    }*/
 
     public ArrayList<Post> getAll(Context context) {
         ArrayList<Post> posts = new ArrayList<>();
@@ -180,7 +183,7 @@ try {
 }
      */
 
-    public void addPost(Context context, final String description,final String imageUrl,final String type){
+    public void addPost(Context context, final String description, final String imageUrl, final String type, final String town, final String petType){
         String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url,null, new Response.Listener<JSONArray>() {
@@ -207,7 +210,9 @@ try {
                 params2.put("petImage", imageUrl);
                 params2.put("type", type);
                 params2.put("user_id", MainActivity.userConnected.getId()+"");
-                params2.put("date", "2018-07-07");
+                params2.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                params2.put("petType", petType);
+                params2.put("town", town);
                 return new JSONObject(params2).toString().getBytes();
             }
 

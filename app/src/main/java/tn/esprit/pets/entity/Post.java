@@ -14,24 +14,31 @@ public class Post {
     private User user;
     private String type;
     private Date date;
+    private Town town;
+    private PetType petType;
 
     public Post() {};
 
-    public Post(String description, String imageUrl, User user, String type, Date date) {
+    public Post(String description, String imageUrl, User user, String type, Date date, PetType petType, Town town) {
         this.description = description;
         this.imageUrl = imageUrl;
         this.user = user;
         this.type = type;
         this.date = new Date();
+        this.petType = petType;
+        this.town = town;
+
     }
 
-    public Post(int id, String description, String imageUrl, User user, String type, Date date) {
+    public Post(int id, String description, String imageUrl, User user, String type, Date date, PetType petType, Town town) {
         this.id = id;
         this.description = description;
         this.imageUrl = imageUrl;
         this.user = user;
         this.type = type;
         this.date = new Date();
+        this.petType = petType;
+        this.town = town;
     }
 
     public int getId() {
@@ -80,5 +87,21 @@ public class Post {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    public PetType getPetType() {
+        return petType;
+    }
+
+    public void setPetType(PetType petType) {
+        this.petType = petType;
     }
 }

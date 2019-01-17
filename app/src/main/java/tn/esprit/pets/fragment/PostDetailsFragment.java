@@ -33,9 +33,12 @@ import java.util.HashMap;
 
 import tn.esprit.pets.R;
 import tn.esprit.pets.adapter.PostsAdapter;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.entity.Town;
 import tn.esprit.pets.entity.User;
 import tn.esprit.pets.service.MySingleton;
+import tn.esprit.pets.utils.Utils;
 
 public class PostDetailsFragment extends Fragment {
 
@@ -94,6 +97,14 @@ public class PostDetailsFragment extends Fragment {
                                 String type = jsonObject.getString("type");
                                 String datel= jsonObject.getString("date");
 
+                                Utils utils = new Utils();
+                                String petTypeString = jsonObject.getString("petType");
+                                PetType petType;
+                                petType = utils.stringToPetType(petTypeString);
+                                String townString = jsonObject.getString("town");
+                                Town town;
+                                town = utils.stringToTown(townString);
+
                                 JSONObject userObject = jsonObject.getJSONObject("user_id");
                                 final User user = new User();
                                 user.setId(Integer.parseInt(userObject.getString("id")));
@@ -119,7 +130,7 @@ public class PostDetailsFragment extends Fragment {
                                 call.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
                                         callIntent.setData(Uri.parse("tel:"+ user.getPhone()));
                                         try {
                                             startActivity(callIntent);

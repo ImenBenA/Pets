@@ -79,8 +79,8 @@ public class LostAndFoundFragment extends Fragment {
                                 }
                                 JSONObject userObject = (JSONObject) jsonObject.get("user");
                                 //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
-                                Post post = new Post(id, description, imageUrl, new User(), type, date);
-                                posts.add(post);
+                                //Post post = new Post(id, description, imageUrl, new User(), type, date);
+                                //posts.add(post);
                             }
                             Log.v("posts response", posts.toString());
 

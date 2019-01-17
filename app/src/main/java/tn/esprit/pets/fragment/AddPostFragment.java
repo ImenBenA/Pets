@@ -16,12 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import tn.esprit.pets.R;
 import tn.esprit.pets.activity.MainActivity;
+import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.service.PostService;
 
@@ -32,6 +34,7 @@ public class AddPostFragment extends Fragment {
     Button add,addImage;
     EditText etDescription;
     RadioGroup radioGroup;
+    Spinner townSpinner, petTypeSpinner;
     ImageView displayImage;
     Bitmap bitmap;
     PostService ps=new PostService();
@@ -58,6 +61,9 @@ public class AddPostFragment extends Fragment {
         addImage = root.findViewById(R.id.addImage);
         displayImage= root.findViewById(R.id.displayImage);
         radioGroup = (RadioGroup) root.findViewById(R.id.type);
+        townSpinner = (Spinner) root.findViewById(R.id.towns);
+        petTypeSpinner = (Spinner) root.findViewById(R.id.pet_type);
+
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,16 +82,14 @@ public class AddPostFragment extends Fragment {
                     type="lost";
                 else if (radiovalue.equals("Found a pet"))
                     type="found";
+
+                String townString = townSpinner.getSelectedItem().toString();
+                String petString = petTypeSpinner.getSelectedItem().toString();
+
                 String description = etDescription.getText().toString();
                 String imageUrl =getStringImage(bitmap);
                 imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
-                String data =
-                        "{\"description\": \""+description+"\",\n" +
-                        "\t\"petImage\": \""+imageUrl+"\",\n" +
-                        "\t\"type\" : \""+type+"\"\n" +
-                        "}";
-
-                ps.addPost(root.getContext(),description,imageUrl,type);
+                ps.addPost(root.getContext(),description,imageUrl,type, townString, petString);
                 getFragmentManager().popBackStackImmediate();
             }
         });
