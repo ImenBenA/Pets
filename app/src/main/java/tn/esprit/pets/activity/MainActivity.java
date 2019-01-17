@@ -2,6 +2,8 @@ package tn.esprit.pets.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -61,7 +63,7 @@ import tn.esprit.pets.utils.Utils;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static User userConnected;
+    public static User userConnected=new User();
     public static List<Post> listPost = new ArrayList<>();
     public static List<Notification> listNotification = new ArrayList<>();
     SharedPreferences sharedPreferences;
@@ -83,19 +85,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getApplicationContext();
         dbHelper = new DBHelper(getApplicationContext());
-        listPost = dbHelper.getAllPosts();
         sharedPreferences = this.getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
+        userConnected.setId(userId);
         String name = sharedPreferences.getString("username", "");
         String pass = sharedPreferences.getString("password", "");
         //System.out.println(name + " and " + pass + " and id : "+userId);
         getUserConnected(userId, name, pass);
+        if (isNetworkAvailable())
         init(getApplicationContext());
-        if (userConnected!=null) {
+        else
+        {
+            listPost = dbHelper.getAllPosts();
+            listNotification = dbHelper.getAllNotifications();
+        }
+        /*if (userConnected!=null) {
             if(!userConnected.getToken().equals(FirebaseInstanceId.getInstance().getToken()))
                 updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
-        }
+        }*/
 
         //mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         lost = (CardView) findViewById(R.id.lost);
@@ -316,10 +324,6 @@ public class MainActivity extends AppCompatActivity {
     public static void setUserConnected(User user){
         userConnected=user;
     }
-    public static void init(Context context){
-        getPosts(context);
-        getNotifications(context);
-    }
     public static void getPosts(Context context){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -437,5 +441,14 @@ public class MainActivity extends AppCompatActivity {
         );
         MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
     }
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    public static void init(Context context){
+            getPosts(context);
+            getNotifications(context);
+    }
 }

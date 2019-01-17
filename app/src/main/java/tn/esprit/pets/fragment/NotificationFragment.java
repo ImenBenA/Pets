@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import tn.esprit.pets.R;
 import tn.esprit.pets.activity.MainActivity;
@@ -36,8 +37,7 @@ import tn.esprit.pets.service.MySingleton;
 import tn.esprit.pets.utils.Utils;
 
 public class NotificationFragment extends Fragment {
-    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/notification/allNotification.php?id="+MainActivity.userConnected.getId();
-    static ArrayList<Notification> notification = new ArrayList<>();
+    static List<Notification> notification = new ArrayList<>();
     View root;
     NotificationAdapter itemsAdapter;
 
@@ -46,70 +46,11 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_notification, container, false);
-        itemsAdapter = new NotificationAdapter(root.getContext(), notification);
+        notification = MainActivity.listNotification;
+        itemsAdapter = new NotificationAdapter(root.getContext(), (ArrayList<Notification>) notification);
         ListView listView = (ListView) root.findViewById(R.id.notification);
         listView.setAdapter(itemsAdapter);
-        getPosts(root.getContext());
         return root;
     }
-    public void getPosts(Context context) {
-        //RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                getAllURL,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.e("json response", response.toString());
-                        try {
-                            notification.clear();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                    String title = jsonObject.getString("title");
-                                    int id = jsonObject.getInt("id");
-                                    String body = jsonObject.getString("body");
-                                    //String type = jsonObject.getString("type");
-                                    DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                    Date date = null;
-                                    try {
-                                        date = (Date) simpleDateFormat.parse(jsonObject.getString("date"));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                    JSONObject userObject = (JSONObject) jsonObject.get("user_id");
-                                    JSONObject postObject = (JSONObject) jsonObject.get("post_id");
-                                Utils utils = new Utils();
-                                String petTypeString = postObject.getString("petType");
-                                PetType petType;
-                                petType = utils.stringToPetType(petTypeString);
-                                String townString = postObject.getString("town");
-                                Town town;
-                                town = utils.stringToTown(townString);
 
-                                Post post = new Post(postObject.getInt("id"),postObject.getString("description"),postObject.getString("petImage"), null, postObject.getString("type"), null, petType, town);
-                                    //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
-                                    User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),"");
-                                    Notification notif = new Notification(id,title,body,date,user,post);
-                                    notification.add(notif);
-
-
-                            }
-                            Log.v("posts response", notification.toString());
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        itemsAdapter.notifyDataSetChanged();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("json error", error.toString());
-                    }
-                }
-        );
-        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
-    }
 }
