@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 
 import okhttp3.internal.Util;
 import tn.esprit.pets.R;
+import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
 import tn.esprit.pets.fragment.PostDetailsFragment;
@@ -54,22 +57,41 @@ public class PostsAdapter extends ArrayAdapter<Post>{
         if (post.getPetType().equals(PetType.CAT) && post.getType().equals("lost")) {
             text.setText("Lost cat near " + post.getTown());
             type.setImageResource(R.drawable.l);
-            //type.setBackground(R.drawable.tag_pink);
+            type.setBackgroundResource(R.drawable.tag_pink);
         } else if (post.getPetType().equals(PetType.CAT) && post.getType().equals("found")) {
             text.setText("Cat found near " + post.getTown());
             type.setImageResource(R.drawable.f);
+            type.setBackgroundResource(R.drawable.tag_green);
         } else if (post.getPetType().equals(PetType.DOG) && post.getType().equals("lost")) {
             text.setText("Lost dog near " + post.getTown());
             type.setImageResource(R.drawable.l);
+            type.setBackgroundResource(R.drawable.tag_pink);
         } else if (post.getPetType().equals(PetType.DOG) && post.getType().equals("found")) {
             text.setText("Dog found near " + post.getTown());
             type.setImageResource(R.drawable.f);
+            type.setBackgroundResource(R.drawable.tag_green);
         } else if (post.getPetType().equals(PetType.OTHER) && post.getType().equals("lost")) {
             text.setText("Lost pet near " + post.getTown());
             type.setImageResource(R.drawable.l);
+            type.setBackgroundResource(R.drawable.tag_pink);
         } else if (post.getPetType().equals(PetType.OTHER) && post.getType().equals("found")) {
             text.setText("Pet found near " + post.getTown());
             type.setImageResource(R.drawable.f);
+            type.setBackgroundResource(R.drawable.tag_green);
+        }
+        Button delete = (Button) convertView.findViewById(R.id.delete);
+
+        Log.e("UserCo" , MainActivity.userConnected.getId() + " " + post.getUser().getId());
+        if (MainActivity.userConnected.getId() == post.getUser().getId()) {
+            delete.setVisibility(View.VISIBLE);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        } else {
+            delete.setVisibility(View.INVISIBLE);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {

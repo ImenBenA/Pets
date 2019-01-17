@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/add_frame"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/white"
+    android:background="@color/backgroundcolor"
     tools:context=".fragment.AddPostFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relative_layout1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,9 +26,20 @@
             android:fontFamily="sans-serif-medium"
             android:text="Add post"
             android:textColor="@color/darkGray"
-            android:textSize="30sp" />
+            android:textSize="30sp" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Add a new post"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/darkGray"
+            android:textSize="15sp" />
 
         <LinearLayout
+            android:background="@color/white"
             android:id="@+id/linear_layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,58 +47,56 @@
             android:layout_marginTop="20dp"
             android:orientation="vertical">
 
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/et_bg_dark"
+                android:fontFamily="sans-serif-light"
+                android:hint="Describe the pet"
+                android:paddingBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/darkGray"
+                android:textSize="15sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
-                <!--<TextView
+                <RadioGroup
+                    android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Image"
-                    android:textAllCaps="true"
-                    android:textColor="@color/darkGray"
-                    android:textSize="15sp" />-->
+                    android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Image"
-                    android:id="@+id/addImage"/>
+                    <RadioButton
+                        android:id="@+id/looking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Looking for a pet"
+                        android:textColor="@color/darkGray" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/displayImage" />
+                    <RadioButton
+                        android:id="@+id/found"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Found a pet"
+                        android:textColor="@color/darkGray" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Description"
-                    android:textAllCaps="true"
-                    android:textColor="@color/darkGray"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:minHeight="100dp"
-                    android:maxHeight="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/et_bg_dark"
-                    android:fontFamily="sans-serif-light"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:layout_gravity="top"
-                    android:paddingBottom="10dp"
-                    android:textColor="@color/darkGray"
-                    android:textSize="15sp" />
+                </RadioGroup>
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,77 +104,79 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/towns"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Type"
-                    android:textAllCaps="true"
-                    android:textColor="@color/darkGray"
-                    android:textSize="15sp" />
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/towns" />
 
-                <RadioGroup
-                    android:id="@+id/type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <RadioButton
-                        android:id="@+id/looking"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Looking for a pet"
-                        android:textColor="@color/darkGray"
-                        android:checked="false" />
-
-                    <RadioButton
-                        android:id="@+id/found"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/darkGray"
-                        android:text="Found a pet"
-                        android:checked="false" />
-
-                </RadioGroup>
-
+                <Spinner
+                    android:id="@+id/pet_type"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/pet_type" />
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/towns"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawSelectorOnTop="true"
-                android:entries="@array/towns"
-                />
 
-            <Spinner
-                android:id="@+id/pet_type"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawSelectorOnTop="true"
-                android:entries="@array/pet_type"
-                />
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/addImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/btn_bg_light"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingLeft="70dp"
+                    android:paddingRight="70dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="30dp"
+                    android:text="Pick an image" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/displayImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/lightgray" />
+            </LinearLayout>
 
         </LinearLayout>
+
+
 
         <Button
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:background="@drawable/btn_bg_dark"
             android:fontFamily="sans-serif-medium"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Add Post"
-            android:layout_alignParentBottom="true"
             android:textAllCaps="false"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    </RelativeLayout>
-
+    </LinearLayout>
 
 
 </ScrollView>

@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -24,6 +25,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "Android News App";
     String type="json";
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -32,11 +37,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        Log.e(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
 
         //Calling method to generate notification
-        try {
-            sendNotification(remoteMessage.getData());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        sharedPreferences = getSharedPreferences("userdata", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        Boolean notifications = sharedPreferences.getBoolean("notifsOn", true);
+
+        if (notifications) {
+            try {
+                sendNotification(remoteMessage.getData());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     //This method is only generating push notification

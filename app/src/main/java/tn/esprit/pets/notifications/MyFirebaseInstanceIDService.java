@@ -20,7 +20,7 @@ import java.util.HashMap;
 import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.service.MySingleton;
 
-class MyFirebaseInstanceIdService extends com.google.firebase.iid.FirebaseInstanceIdService {
+class MyFirebaseInstanceIDService extends com.google.firebase.iid.FirebaseInstanceIdService {
 
     private static final String TAG = "MyFirebaseIIDService";
     String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";

@@ -42,6 +42,7 @@ import tn.esprit.pets.fragment.FoundFragment;
 import tn.esprit.pets.fragment.LostAndFoundFragment;
 import tn.esprit.pets.fragment.LostFragment;
 import tn.esprit.pets.fragment.MessageFragment;
+import tn.esprit.pets.fragment.MyPostsFragment;
 import tn.esprit.pets.fragment.NotificationFragment;
 import tn.esprit.pets.fragment.ProfileFragment;
 import tn.esprit.pets.fragment.SettingsFragment;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
     int userId;
     GridLayout mainGrid;
-    CardView lost, found, profile, settings, notifications, addPost;
+    CardView lost, found, profile, settings, notifications, addPost, myPosts;
     Runnable runnable;
     Handler handler = new Handler();
 
@@ -129,6 +130,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        myPosts = (CardView) findViewById(R.id.myPosts);
+        myPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new MyPostsFragment()).commit();
+                    }
+                };
+                if (runnable != null) {
+                    handler.post(runnable);
+                }
+            }
+        });
+
         notifications = (CardView) findViewById(R.id.notifications);
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override

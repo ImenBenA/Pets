@@ -84,13 +84,13 @@ public class FoundFragment extends Fragment {
                                     DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                                     Date date = null;
                                     try {
-                                        date = (Date) simpleDateFormat.parse(jsonObject.getString("date"));
+                                        date = simpleDateFormat.parse(jsonObject.getString("date"));
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                    // JSONObject userObject = (JSONObject) jsonObject.get("user_id");
-                                    //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"))
-                                    Post post = new Post(id, description, link, new User(), type, date, petType, town);
+                                    JSONObject userObject = (JSONObject) jsonObject.get("user_id");
+                                    User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("phone"), userObject.getString("token"));
+                                    Post post = new Post(id, description, link, user, type, date, petType, town);
                                     found.add(post);
                                 }
 

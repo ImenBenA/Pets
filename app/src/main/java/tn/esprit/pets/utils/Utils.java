@@ -11,51 +11,51 @@ public class Utils {
 
     public Town stringToTown(String townString) {
         Town town;
-        if (townString.equals("ARIANA")) {
+        if (townString.toUpperCase().equals("ARIANA")) {
             town = Town.ARIANA;
-        } else if (townString.equals("BEJA")) {
+        } else if (townString.toUpperCase().equals("BEJA")) {
             town = Town.BEJA;
-        } else if (townString.equals("BENAROUS")) {
+        } else if (townString.toUpperCase().equals("BENAROUS")) {
             town = Town.BENAROUS;
-        } else if (townString.equals("BIZERTE")) {
+        } else if (townString.toUpperCase().equals("BIZERTE")) {
             town = Town.BIZERTE;
-        } else if (townString.equals("GABES")) {
+        } else if (townString.toUpperCase().equals("GABES")) {
             town = Town.GABES;
-        } else if (townString.equals("GAFSA")) {
+        } else if (townString.toUpperCase().equals("GAFSA")) {
             town = Town.GAFSA;
-        } else if (townString.equals("JENDOUBA")) {
+        } else if (townString.toUpperCase().equals("JENDOUBA")) {
             town = Town.JENDOUBA;
-        } else if (townString.equals("KAIROUAN")) {
+        } else if (townString.toUpperCase().equals("KAIROUAN")) {
             town = Town.KAIROUAN;
-        } else if (townString.equals("KASSERINE")) {
+        } else if (townString.toUpperCase().equals("KASSERINE")) {
             town = Town.KASSERINE;
-        } else if (townString.equals("KEBILI")) {
+        } else if (townString.toUpperCase().equals("KEBILI")) {
             town = Town.KEBILI;
-        } else if (townString.equals("KEF")) {
+        } else if (townString.toUpperCase().equals("KEF")) {
             town = Town.KEF;
-        } else if (townString.equals("MAHDIA")) {
+        } else if (townString.toUpperCase().equals("MAHDIA")) {
             town = Town.MAHDIA;
-        } else if (townString.equals("MANOUBA")) {
+        } else if (townString.toUpperCase().equals("MANOUBA")) {
             town = Town.MANOUBA;
-        } else if (townString.equals("MEDENINE")) {
+        } else if (townString.toUpperCase().equals("MEDENINE")) {
             town = Town.MEDENINE;
-        } else if (townString.equals("MONASTIR")) {
+        } else if (townString.toUpperCase().equals("MONASTIR")) {
             town = Town.MONASTIR;
-        } else if (townString.equals("NABEUL")) {
+        } else if (townString.toUpperCase().equals("NABEUL")) {
             town = Town.NABEUL;
-        } else if (townString.equals("SFAX")) {
+        } else if (townString.toUpperCase().equals("SFAX")) {
             town = Town.SFAX;
-        } else if (townString.equals("SIDIBOUZID")) {
+        } else if (townString.toUpperCase().equals("SIDIBOUZID")) {
             town = Town.SIDIBOUZID;
-        } else if (townString.equals("SILIANA")) {
+        } else if (townString.toUpperCase().equals("SILIANA")) {
             town = Town.SILIANA;
-        } else if (townString.equals("SOUSSE")) {
+        } else if (townString.toUpperCase().equals("SOUSSE")) {
             town = Town.SOUSSE;
-        } else if (townString.equals("TATAOUINE")) {
+        } else if (townString.toUpperCase().equals("TATAOUINE")) {
             town = Town.TATAOUINE;
-        } else if (townString.equals("TOZEUR")) {
+        } else if (townString.toUpperCase().equals("TOZEUR")) {
             town = Town.TOZEUR;
-        } else if (townString.equals("TUNIS")) {
+        } else if (townString.toUpperCase().equals("TUNIS")) {
             town = Town.TUNIS;
         } else {
             town = Town.ZAGHOUAN;
@@ -65,9 +65,9 @@ public class Utils {
 
     public PetType stringToPetType( String petTypeString) {
         PetType petType;
-        if (petTypeString.equals("CAT")) {
+        if (petTypeString.toUpperCase().equals("CAT")) {
             petType = PetType.CAT;
-        } else if (petTypeString.equals("DOG")) {
+        } else if (petTypeString.toUpperCase().equals("DOG")) {
             petType = PetType.DOG;
         } else {
             petType = PetType.OTHER;

@@ -87,7 +87,7 @@ public class AddPostFragment extends Fragment {
                 String petString = petTypeSpinner.getSelectedItem().toString();
 
                 String description = etDescription.getText().toString();
-                String imageUrl =getStringImage(bitmap);
+                String imageUrl = getStringImage(bitmap);
                 imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
                 ps.addPost(root.getContext(),description,imageUrl,type, townString, petString);
                 getFragmentManager().popBackStackImmediate();
@@ -112,6 +112,7 @@ public class AddPostFragment extends Fragment {
             try {
                 bitmap=MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),filepath);
                 displayImage.setImageBitmap(bitmap);
+                addImage.setVisibility(View.GONE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

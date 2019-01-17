@@ -29,13 +29,14 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public User(int id, String username, String email, String phone) {
+    public User(int id, String username, String phone, String token) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.phone = phone;
+        this.token = token;
     }
-    public User(int id, String username, String password, String email, String phone,String token) {
+
+    public User(int id, String username, String password, String email, String phone, String token) {
         this.id = id;
         this.username = username;
         this.password = password;

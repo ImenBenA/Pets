@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import tn.esprit.pets.R;
+import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.adapter.PostsAdapter;
 import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
@@ -50,8 +51,10 @@ public class PostDetailsFragment extends Fragment {
     TextView description;
     TextView date, username;
     ImageView image;
-    Button call;
+    Button call, delete;
     ImageView typeImage;
+    ImageView type;
+    TextView text;
 
 
     String findPostByIdURL = "http://" + MySingleton.getIp() + "/PetsWS/post/postById.php";
@@ -69,8 +72,11 @@ public class PostDetailsFragment extends Fragment {
         image = (ImageView) root.findViewById(R.id.post_image);
         date = (TextView) root.findViewById(R.id.post_date);
         call = (Button) root.findViewById(R.id.call);
-        username = (TextView) root.findViewById(R.id.username);
-        typeImage = (ImageView) root.findViewById(R.id.type);
+        type = (ImageView) root.findViewById(R.id.type_image);
+        text = (TextView) root.findViewById(R.id.type_text);
+        delete = (Button) root.findViewById(R.id.delete);
+        //username = (TextView) root.findViewById(R.id.username);
+        //typeImage = (ImageView) root.findViewById(R.id.type);
 
         findPostById(root.getContext(), id_post);
 
@@ -94,7 +100,7 @@ public class PostDetailsFragment extends Fragment {
                                 //int id = Integer.parseInt(jsonObject.getString("id"));
                                 String descriptionl = jsonObject.getString("description");
                                 String petImage = jsonObject.getString("petImage");
-                                String type = jsonObject.getString("type");
+                                String typel = jsonObject.getString("type");
                                 String datel= jsonObject.getString("date");
 
                                 Utils utils = new Utils();
@@ -117,14 +123,56 @@ public class PostDetailsFragment extends Fragment {
                                 date.setText(datel);
                                 description.setText(descriptionl);
                                 Picasso.with(getContext()).load("http://" + MySingleton.getIp() + "/PetsWS/post/"+petImage).into(image);
-                                username.setText(user.getUsername());
+                                /*username.setText(user.getUsername());
                                 if(type.equals("lost")) {
                                     typeImage.setImageResource(R.drawable.l);
                                     //typeImage.setBackgroundColor(R.drawable.cercleshape_pink);
                                 }else {
                                     typeImage.setImageResource(R.drawable.f);
                                     //typeImage.setBackgroundColor(R.drawable.cercleshape_green);
+                                }*/
+
+
+                                if (petType.equals(PetType.CAT) && typel.equals("lost")) {
+                                    text.setText("Lost cat near " + town);
+                                    type.setImageResource(R.drawable.l);
+                                    type.setBackgroundResource(R.drawable.tag_pink);
+                                } else if (petType.equals(PetType.CAT) && typel.equals("found")) {
+                                    text.setText("Cat found near " + town);
+                                    type.setImageResource(R.drawable.f);
+                                    type.setBackgroundResource(R.drawable.tag_green);
+                                } else if (petType.equals(PetType.DOG) && typel.equals("lost")) {
+                                    text.setText("Lost dog near " + town);
+                                    type.setImageResource(R.drawable.l);
+                                    type.setBackgroundResource(R.drawable.tag_pink);
+                                } else if (petType.equals(PetType.DOG) && typel.equals("found")) {
+                                    text.setText("Dog found near " + town);
+                                    type.setImageResource(R.drawable.f);
+                                    type.setBackgroundResource(R.drawable.tag_green);
+                                } else if (petType.equals(PetType.OTHER) && typel.equals("lost")) {
+                                    text.setText("Lost pet near " + town);
+                                    type.setImageResource(R.drawable.l);
+                                    type.setBackgroundResource(R.drawable.tag_pink);
+                                } else if (petType.equals(PetType.OTHER) && typel.equals("found")) {
+                                    text.setText("Pet found near " + town);
+                                    type.setImageResource(R.drawable.f);
+                                    type.setBackgroundResource(R.drawable.tag_green);
                                 }
+
+
+                                //Log.e("UserCo" , MainActivity.userConnected.getId() + " " + user.getId());
+                                if (MainActivity.userConnected.getId() == user.getId()) {
+                                    delete.setVisibility(View.VISIBLE);
+                                    delete.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                        }
+                                    });
+                                } else {
+                                    delete.setVisibility(View.INVISIBLE);
+                                }
+
 
                                 call.setText("Call " + user.getUsername().toString());
                                 call.setOnClickListener(new View.OnClickListener() {
