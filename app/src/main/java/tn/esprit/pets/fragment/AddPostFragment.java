@@ -76,21 +76,23 @@ public class AddPostFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String radiovalue = ((RadioButton) root.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
-                String type="";
-                if (radiovalue.equals("Looking for a pet"))
-                    type="lost";
-                else if (radiovalue.equals("Found a pet"))
-                    type="found";
+                if (bitmap != null) {
+                    String radiovalue = ((RadioButton) root.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
+                    String type = "";
+                    if (radiovalue.equals("Looking for a pet"))
+                        type = "lost";
+                    else if (radiovalue.equals("Found a pet"))
+                        type = "found";
 
-                String townString = townSpinner.getSelectedItem().toString();
-                String petString = petTypeSpinner.getSelectedItem().toString();
+                    String townString = townSpinner.getSelectedItem().toString();
+                    String petString = petTypeSpinner.getSelectedItem().toString();
 
-                String description = etDescription.getText().toString();
-                String imageUrl = getStringImage(bitmap);
-                imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
-                ps.addPost(getContext(),description,imageUrl,type, townString, petString);
-                getFragmentManager().popBackStackImmediate();
+                    String description = etDescription.getText().toString();
+                    String imageUrl = getStringImage(bitmap);
+                    imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
+                    ps.addPost(getContext(), description, imageUrl, type, townString, petString);
+                    getFragmentManager().popBackStackImmediate();
+                }
             }
         });
         return root;
