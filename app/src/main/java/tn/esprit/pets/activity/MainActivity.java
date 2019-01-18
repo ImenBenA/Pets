@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
     public static void getNotifications(Context context){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                getAllNotificationsURL+50,
+                getAllNotificationsURL+userConnected.getId(),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -446,9 +446,10 @@ public class MainActivity extends AppCompatActivity {
                                 town = utils.stringToTown(townString);
 
                                 Post post = new Post(postObject.getInt("id"),postObject.getString("description"),postObject.getString("petImage"), null, postObject.getString("type"), null, petType, town);
+                                System.out.print(post.getId());
                                 //User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
                                 User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),"");
-                                Notification notif = new Notification(id,title,body,date,user,post);
+                                Notification notif = new Notification(id, title, body, date, user, post);
                                 listNotification.add(notif);
                                 dbHelper.insertNotification(notif);
 

@@ -194,7 +194,7 @@ try {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
-                //MainActivity.init(context);
+                MainActivity.init(context);
 
             }
         }, new Response.ErrorListener() {
