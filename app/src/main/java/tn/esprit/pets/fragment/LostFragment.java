@@ -37,7 +37,7 @@ import tn.esprit.pets.utils.Utils;
 public class LostFragment extends Fragment {
 
     private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts.php";
-    static ArrayList<Post> lost = new ArrayList<>();
+    public static ArrayList<Post> lost = new ArrayList<>();
     View root;
     PostsAdapter itemsAdapter;
 

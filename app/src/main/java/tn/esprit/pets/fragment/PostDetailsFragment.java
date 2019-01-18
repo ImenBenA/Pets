@@ -2,6 +2,8 @@ package tn.esprit.pets.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,166 +48,130 @@ public class PostDetailsFragment extends Fragment {
     public PostDetailsFragment() {
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     View root;
-    int id_post;
+    int idPost;
     TextView description;
-    TextView date, username;
+    TextView date;
     ImageView image;
     Button call, delete;
-    ImageView typeImage;
     ImageView type;
     TextView text;
+    Post post;
 
-
-    String findPostByIdURL = "http://" + MySingleton.getIp() + "/PetsWS/post/postById.php";
+    String deletePostURL = "http://" + MySingleton.getIp() + "/PetsWS/post/deletePost.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_post_details, container, false);
         Bundle extras = getArguments();
-        id_post = extras.getInt("id_post");
+        idPost = extras.getInt("id_post");
 
-
+        for (Post p : MainActivity.listPost) {
+            if(p.getId() == idPost) {
+                post = p;
+            }
+        }
 
         description = (TextView) root.findViewById(R.id.post_description);
+        description.setText(post.getDescription());
+
         image = (ImageView) root.findViewById(R.id.post_image);
+        Picasso.with(getContext()).load(post.getImageUrl()).into(image);
+
         date = (TextView) root.findViewById(R.id.post_date);
+        date.setText(new SimpleDateFormat("dd MM yyyy").format(post.getDate()));
+
         call = (Button) root.findViewById(R.id.call);
+        call.setText("Call " + post.getUser().getUsername().toString());
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:"+ post.getUser().getPhone()));
+                try {
+                    startActivity(callIntent);
+                } catch (SecurityException se) {
+                }
+            }
+        });
+
+        delete = (Button) root.findViewById(R.id.delete);
+
+        if (MainActivity.userConnected.getId() == post.getUser().getId()) {
+            delete.setVisibility(View.VISIBLE);
+            if (!isNetworkAvailable()) {
+                delete.setEnabled(false);
+            } else {
+                delete.setEnabled(true);
+            }
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getSupportFragmentManager().popBackStackImmediate();
+                    deletePost(root.getContext(),idPost);
+                    MainActivity.listPost.remove(post);
+                    LostFragment.lost.remove(post);
+                    FoundFragment.found.remove(post);
+                }
+            });
+        } else {
+            delete.setVisibility(View.INVISIBLE);
+        }
+
         type = (ImageView) root.findViewById(R.id.type_image);
         text = (TextView) root.findViewById(R.id.type_text);
-        delete = (Button) root.findViewById(R.id.delete);
-        //username = (TextView) root.findViewById(R.id.username);
-        //typeImage = (ImageView) root.findViewById(R.id.type);
-
-        findPostById(root.getContext(), id_post);
+        if (post.getPetType().equals(PetType.CAT) && post.getType().equals("lost")) {
+            text.setText("Lost cat near " + post.getTown());
+            type.setImageResource(R.drawable.l);
+            type.setBackgroundResource(R.drawable.tag_pink);
+        } else if (post.getPetType().equals(PetType.CAT) && post.getType().equals("found")) {
+            text.setText("Cat found near " + post.getTown());
+            type.setImageResource(R.drawable.f);
+            type.setBackgroundResource(R.drawable.tag_green);
+        } else if (post.getPetType().equals(PetType.DOG) && post.getType().equals("lost")) {
+            text.setText("Lost dog near " + post.getTown());
+            type.setImageResource(R.drawable.l);
+            type.setBackgroundResource(R.drawable.tag_pink);
+        } else if (post.getPetType().equals(PetType.DOG) && post.getType().equals("found")) {
+            text.setText("Dog found near " + post.getTown());
+            type.setImageResource(R.drawable.f);
+            type.setBackgroundResource(R.drawable.tag_green);
+        } else if (post.getPetType().equals(PetType.OTHER) && post.getType().equals("lost")) {
+            text.setText("Lost pet near " + post.getTown());
+            type.setImageResource(R.drawable.l);
+            type.setBackgroundResource(R.drawable.tag_pink);
+        } else if (post.getPetType().equals(PetType.OTHER) && post.getType().equals("found")) {
+            text.setText("Pet found near " + post.getTown());
+            type.setImageResource(R.drawable.f);
+            type.setBackgroundResource(R.drawable.tag_green);
+        }
 
         return root;
     }
 
-    public void findPostById(Context context, int id_post) {
+    public void deletePost(Context context, int id_post) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                findPostByIdURL + "?id=" +  id_post,
+                deletePostURL + "?id=" +  id_post,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("found post", response.toString());
-
-                        try {
-                            System.out.println(response.toString());
-                            if(!response.toString().equals("{}")) {
-                                JSONObject jsonObject = response;
-                                //int id = Integer.parseInt(jsonObject.getString("id"));
-                                String descriptionl = jsonObject.getString("description");
-                                String petImage = jsonObject.getString("petImage");
-                                String typel = jsonObject.getString("type");
-                                String datel= jsonObject.getString("date");
-
-                                Utils utils = new Utils();
-                                String petTypeString = jsonObject.getString("petType");
-                                PetType petType;
-                                petType = utils.stringToPetType(petTypeString);
-                                String townString = jsonObject.getString("town");
-                                Town town;
-                                town = utils.stringToTown(townString);
-
-                                JSONObject userObject = jsonObject.getJSONObject("user_id");
-                                final User user = new User();
-                                user.setId(Integer.parseInt(userObject.getString("id")));
-                                user.setUsername(userObject.getString("username"));
-                                user.setToken(userObject.getString("token"));
-                                user.setPhone(userObject.getString("phone"));
-                                user.setEmail(userObject.getString("email"));
-                                Log.e("USERINFO", userObject.toString());
-
-                                date.setText(datel);
-                                description.setText(descriptionl);
-                                Picasso.with(getContext()).load("http://" + MySingleton.getIp() + "/PetsWS/post/"+petImage).into(image);
-                                /*username.setText(user.getUsername());
-                                if(type.equals("lost")) {
-                                    typeImage.setImageResource(R.drawable.l);
-                                    //typeImage.setBackgroundColor(R.drawable.cercleshape_pink);
-                                }else {
-                                    typeImage.setImageResource(R.drawable.f);
-                                    //typeImage.setBackgroundColor(R.drawable.cercleshape_green);
-                                }*/
-
-
-                                if (petType.equals(PetType.CAT) && typel.equals("lost")) {
-                                    text.setText("Lost cat near " + town);
-                                    type.setImageResource(R.drawable.l);
-                                    type.setBackgroundResource(R.drawable.tag_pink);
-                                } else if (petType.equals(PetType.CAT) && typel.equals("found")) {
-                                    text.setText("Cat found near " + town);
-                                    type.setImageResource(R.drawable.f);
-                                    type.setBackgroundResource(R.drawable.tag_green);
-                                } else if (petType.equals(PetType.DOG) && typel.equals("lost")) {
-                                    text.setText("Lost dog near " + town);
-                                    type.setImageResource(R.drawable.l);
-                                    type.setBackgroundResource(R.drawable.tag_pink);
-                                } else if (petType.equals(PetType.DOG) && typel.equals("found")) {
-                                    text.setText("Dog found near " + town);
-                                    type.setImageResource(R.drawable.f);
-                                    type.setBackgroundResource(R.drawable.tag_green);
-                                } else if (petType.equals(PetType.OTHER) && typel.equals("lost")) {
-                                    text.setText("Lost pet near " + town);
-                                    type.setImageResource(R.drawable.l);
-                                    type.setBackgroundResource(R.drawable.tag_pink);
-                                } else if (petType.equals(PetType.OTHER) && typel.equals("found")) {
-                                    text.setText("Pet found near " + town);
-                                    type.setImageResource(R.drawable.f);
-                                    type.setBackgroundResource(R.drawable.tag_green);
-                                }
-
-
-                                //Log.e("UserCo" , MainActivity.userConnected.getId() + " " + user.getId());
-                                if (MainActivity.userConnected.getId() == user.getId()) {
-                                    delete.setVisibility(View.VISIBLE);
-                                    delete.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                        }
-                                    });
-                                } else {
-                                    delete.setVisibility(View.INVISIBLE);
-                                }
-
-
-                                call.setText("Call " + user.getUsername().toString());
-                                call.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                                        callIntent.setData(Uri.parse("tel:"+ user.getPhone()));
-                                        try {
-                                            startActivity(callIntent);
-                                        } catch (SecurityException se) {
-                                        }
-                                    }
-                                });
-                            }
-                        } catch (JSONException e) {
-                            Log.e("found p exc",   "");
-                            e.printStackTrace();
-                        }
-                    }
-                },
+                    }},
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("obj error", error.toString());
                     }
-                }
-        );
+                } );
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
     }
-
-    /*Intent callIntent = new Intent(Intent.ACTION_CALL);
-callIntent.setData(Uri.parse("tel:123456789"));
-startActivity(callIntent);
-<uses-permission android:name="android.permission.CALL_PHONE" />*/
-
 }

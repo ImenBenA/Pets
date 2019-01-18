@@ -24,11 +24,13 @@ import tn.esprit.pets.R;
 import tn.esprit.pets.activity.MainActivity;
 import tn.esprit.pets.entity.PetType;
 import tn.esprit.pets.entity.Post;
+import tn.esprit.pets.fragment.LostFragment;
 import tn.esprit.pets.fragment.PostDetailsFragment;
 
 public class PostsAdapter extends ArrayAdapter<Post>{
 
     FragmentManager fragmentManager;
+    private int index;
 
     public PostsAdapter(Context context, ArrayList<Post> contacts) {
         super(context, 0, contacts);
@@ -36,9 +38,10 @@ public class PostsAdapter extends ArrayAdapter<Post>{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         final Post post = getItem(position);
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_post, parent, false);
         }
@@ -79,20 +82,6 @@ public class PostsAdapter extends ArrayAdapter<Post>{
             text.setText("Pet found near " + post.getTown());
             type.setImageResource(R.drawable.f);
             type.setBackgroundResource(R.drawable.tag_green);
-        }
-        Button delete = (Button) convertView.findViewById(R.id.delete);
-
-        Log.e("UserCo" , MainActivity.userConnected.getId() + " " + post.getUser().getId());
-        if (MainActivity.userConnected.getId() == post.getUser().getId()) {
-            delete.setVisibility(View.VISIBLE);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        } else {
-            delete.setVisibility(View.INVISIBLE);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {

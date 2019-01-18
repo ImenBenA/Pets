@@ -2,6 +2,8 @@ package tn.esprit.pets.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -196,7 +198,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         addPost = (CardView) findViewById(R.id.addPost);
+        if (!isNetworkAvailable()) {
+            addPost.setEnabled(false);
+        } else {
+            addPost.setEnabled(true);
+        }
         addPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -436,6 +444,13 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
         MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

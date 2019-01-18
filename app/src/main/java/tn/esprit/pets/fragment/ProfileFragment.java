@@ -3,6 +3,8 @@ package tn.esprit.pets.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -53,6 +55,13 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,6 +79,12 @@ public class ProfileFragment extends Fragment {
         emailEdit = (EditText) root.findViewById(R.id.emailedit);
         phoneEdit = (EditText) root.findViewById(R.id.phoneedit);
         edit = (Button) root.findViewById(R.id.edit);
+
+        if (!isNetworkAvailable()) {
+            edit.setEnabled(false);
+        } else {
+            edit.setEnabled(true);
+        }
 
         getUserConnectedArray();
 

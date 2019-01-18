@@ -52,13 +52,12 @@
 
                 <Button
                     android:id="@+id/delete"
-                    android:layout_width="20dp"
-                    android:visibility="invisible"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/delete" />
+                    android:background="@drawable/trash" />
             </RelativeLayout>
 
         </LinearLayout>

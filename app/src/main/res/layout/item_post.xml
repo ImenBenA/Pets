@@ -52,15 +52,14 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <Button
+                <ImageView
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:id="@+id/delete"
-                    android:visibility="invisible"
+                    android:id="@+id/next"
                     android:layout_gravity="center"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/delete" />
+                    android:background="@drawable/next" />
             </RelativeLayout>
 
         </LinearLayout>

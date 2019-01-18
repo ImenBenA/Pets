@@ -1,7 +1,10 @@
 package tn.esprit.pets.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,6 +35,7 @@ public class SettingsFragment extends Fragment {
     public SettingsFragment() {
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class SettingsFragment extends Fragment {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         sharedPreferences = getActivity().getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
 
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
