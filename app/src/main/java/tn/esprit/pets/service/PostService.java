@@ -193,7 +193,7 @@ try {
             @Override
             public void onResponse(String response) {
 
-                MainActivity.init(context);
+                //MainActivity.init(context);
 
             }
         }, new Response.ErrorListener() {

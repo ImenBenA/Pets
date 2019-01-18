@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if(isNetworkAvailable())
+                        init(getApplicationContext());
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
                     }
                 };
@@ -130,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if(isNetworkAvailable())
+                        init(getApplicationContext());
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new FoundFragment()).commit();
                     }
                 };
