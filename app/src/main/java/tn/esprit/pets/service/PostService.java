@@ -189,18 +189,11 @@ try {
     public void addPost(final Context context, final String description, final String imageUrl, final String type, final String town, final String petType){
         String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url,null, new Response.Listener<JSONArray>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(String response) {
 
-                try {
-
-                    JSONObject jsonObject = response.getJSONObject(0);
-                } catch (JSONException e) {
-                    MainActivity.init(context);
-                    System.out.println("poooooooooooooooooooo");
-                    e.printStackTrace();
-                }
+                //MainActivity.init(context);
 
             }
         }, new Response.ErrorListener() {
@@ -228,7 +221,7 @@ try {
             }
         };
         ;
-        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
+        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
 }

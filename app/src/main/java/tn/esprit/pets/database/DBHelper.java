@@ -87,7 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(ID_NOTIFICATION, n.getId());
         contentValues.put(TITLE_NOTIFICATION, n.getTitle());
         contentValues.put(BODY_NOTIFICATION, n.getBody());
-        contentValues.put(DATE_NOTIFICATION, n.getDate().toString());
+        contentValues.put(DATE_NOTIFICATION, new SimpleDateFormat("yyyy-MM-dd").format( n.getDate()));
         contentValues.put(USER_ID_NOTIFICATION, n.getUser().getId());
         contentValues.put(POST_ID_NOTIFICATION, n.getPost().getId());
         db.insert(TABLE_NOTIFICATION, null, contentValues);
@@ -104,8 +104,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 notification.setId(Integer.parseInt(res.getString(0)));
                 notification.setTitle(res.getString(1));
                 notification.setBody(res.getString(2));
+                DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
                 try {
-                    notification.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(res.getString(3)));
+                    date=new SimpleDateFormat("yyyy-MM-dd").parse(res.getString(3));
+                    notification.setDate(date);
                 } catch (ParseException e) {
                     //e.printStackTrace();
                 }
