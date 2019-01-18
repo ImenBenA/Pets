@@ -173,6 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 User user = new User();
                 user.setId(Integer.parseInt(res.getString(4)));
                 user.setPhone(res.getString(7));
+                System.out.println("phone : "+user.getPhone());
                 user.setUsername(res.getString(6));
                 post.setUser(user);
                 DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

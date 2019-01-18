@@ -1,6 +1,8 @@
 package tn.esprit.pets.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -63,7 +65,7 @@ import tn.esprit.pets.utils.Utils;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static User userConnected;
+    public static User userConnected=new User();
     public static List<Post> listPost = new ArrayList<>();
     public static List<Notification> listNotification = new ArrayList<>();
     SharedPreferences sharedPreferences;
@@ -84,20 +86,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getApplicationContext();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Warning");
+        builder.setMessage("No network connection");
+        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         dbHelper = new DBHelper(getApplicationContext());
         listPost = dbHelper.getAllPosts();
+        listNotification=dbHelper.getAllNotifications();
         sharedPreferences = this.getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
         userId = sharedPreferences.getInt("id", 0);
         String name = sharedPreferences.getString("username", "");
         String pass = sharedPreferences.getString("password", "");
         //System.out.println(name + " and " + pass + " and id : "+userId);
+        userConnected.setId(userId);
         getUserConnected(userId, name, pass);
         init(getApplicationContext());
-        if (userConnected!=null) {
-            if(!userConnected.getToken().equals(FirebaseInstanceId.getInstance().getToken()))
-                updateUser(getApplicationContext(),userConnected.getId()+"",FirebaseInstanceId.getInstance().getToken());
-        }
 
         //mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         lost = (CardView) findViewById(R.id.lost);
@@ -108,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if (isNetworkAvailable())
+                            init(getApplicationContext());
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
                     }
                 };
@@ -124,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if (isNetworkAvailable())
+                            init(getApplicationContext());
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new FoundFragment()).commit();
                     }
                 };
@@ -140,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if (!isNetworkAvailable()) {
+                            builder.show();
+                        }
+                        else
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new ProfileFragment()).commit();
                     }
                 };
@@ -174,6 +192,10 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if (!isNetworkAvailable()) {
+                            builder.show();
+                        }
+                        else
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new NotificationFragment()).commit();
                     }
                 };
@@ -365,7 +387,8 @@ public class MainActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                     JSONObject userObject = (JSONObject) jsonObject.get("user_id");
-                                    User user = new User(userObject.getInt("id"), userObject.getString("username"), userObject.getString("password"),userObject.getString("phone"));
+                                    User user = new User(userObject.getInt("id"), userObject.getString("username"),userObject.getString("phone"),"");
+                                    user.setPhone(userObject.getString("phone"));
                                     Post post = new Post(id, description, link, user , type, date, petType, town);
                                     dbHelper.insertPost(post);
                                     listPost.add(post);
@@ -398,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("json response", response.toString());
                         try {
                             dbHelper.getAllNotifications();
+                            listNotification.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 String title = jsonObject.getString("title");
