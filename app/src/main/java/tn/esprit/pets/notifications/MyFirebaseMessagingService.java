@@ -41,6 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         editor = sharedPreferences.edit();
         Boolean notifications = sharedPreferences.getBoolean("notifsOn", true);
 
+
         if (notifications) {
             try {
                 sendNotification(remoteMessage.getData());

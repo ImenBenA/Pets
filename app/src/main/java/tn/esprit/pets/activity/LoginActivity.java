@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (lusername.equalsIgnoreCase(username) && lpassword.equals(password)) {
                                     isAuthentified = true;
-                                    userConnected = new User(id,lusername, lpassword, email, phone,token);
+                                    userConnected = new User(id,lusername, lpassword, email, phone, token);
                                     editor.putString("username", lusername);
                                     editor.putString("password", lpassword);
                                     editor.putInt("id", id);

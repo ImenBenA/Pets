@@ -135,10 +135,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
+        android:gravity="center"
         android:layout_marginRight="20dp"
         android:visibility="gone">
 
         <Button
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -146,17 +148,6 @@
             android:text="Signup Now"
             android:textAllCaps="true"
             android:id="@+id/signup"
-            android:textColor="@color/white" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@color/transparent"
-            android:fontFamily="sans-serif"
-            android:text="Forgot Password?"
-            android:id="@+id/forgotpassword"
-            android:textAllCaps="true"
             android:textColor="@color/white" />
 
     </RelativeLayout>
