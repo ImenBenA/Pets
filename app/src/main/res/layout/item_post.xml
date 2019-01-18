@@ -38,9 +38,7 @@
                         android:id="@+id/type_image"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@drawable/tag_green"
-                        android:padding="10dp"
-                        android:src="@drawable/l" />
+                        android:padding="15dp" />
 
                     <TextView
                         android:id="@+id/type_text"
@@ -48,7 +46,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="8dp"
-                        android:text="post type"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -86,7 +83,6 @@
             android:padding="8dp"
             android:paddingStart="5dp"
             android:layout_gravity="start"
-            android:text="description"
             android:textStyle="bold" />
 
 
@@ -99,7 +95,6 @@
             android:layout_gravity="start"
             android:padding="5dp"
             android:textSize="10dp"
-            android:text="2019-04-02"
             android:textColor="@android:color/darker_gray" />
 
     </LinearLayout>

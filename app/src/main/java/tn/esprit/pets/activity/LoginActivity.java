@@ -126,6 +126,8 @@ public class LoginActivity extends AppCompatActivity {
                                     userConnected = new User(id,lusername, lpassword, email, phone, token);
                                     editor.putString("username", lusername);
                                     editor.putString("password", lpassword);
+                                    editor.putString("email", email);
+                                    editor.putString("phone", phone);
                                     editor.putInt("id", id);
                                     editor.commit();
                                     Log.e("is authentified", isAuthentified + userConnected.toString());

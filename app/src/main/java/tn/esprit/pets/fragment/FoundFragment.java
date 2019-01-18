@@ -1,13 +1,19 @@
 package tn.esprit.pets.fragment;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -57,7 +63,17 @@ public class FoundFragment extends Fragment {
         itemsAdapter = new PostsAdapter(root.getContext(), found);
         ListView listView = (ListView) root.findViewById(R.id.posts);
         listView.setAdapter(itemsAdapter);
-        //getPosts(root.getContext());
+
+        LinearLayout linearLayout = (LinearLayout) root.findViewById(R.id.message_layout);
+        TextView message = (TextView) root.findViewById(R.id.message);
+
+        if (found.size() == 0) {
+            linearLayout.setVisibility(View.VISIBLE);
+            message.setText("There are currently no found posts");
+        } else {
+            linearLayout.setVisibility(View.GONE);
+        }
+
         return root;
     }
 }

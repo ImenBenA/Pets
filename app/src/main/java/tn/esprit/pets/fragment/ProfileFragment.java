@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
     User userConnected;
     String getURL = "http://" + MySingleton.getIp() + "/PetsWS/user/userById.php?id=";
     String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
-    TextView username, password, email, usernameTitle, phone;
+    TextView username, password, email, phone;
     EditText usernameEdit, passwordEdit, emailEdit, usernameTitleEdit, phoneEdit;
     ImageView picture;
     Button edit;
@@ -69,8 +69,13 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = root.getContext().getSharedPreferences("userdata", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
+        String name = sharedPreferences.getString("username", "");
+        String pass = sharedPreferences.getString("password", "");
+        String emai = sharedPreferences.getString("email", "");
+        String phon = sharedPreferences.getString("phone", "");
+
         username = (TextView) root.findViewById(R.id.username);
-        usernameTitle = (TextView) root.findViewById(R.id.usernameTitle);
+        //usernameTitle = (TextView) root.findViewById(R.id.usernameTitle);
         password = (TextView) root.findViewById(R.id.password);
         email = (TextView) root.findViewById(R.id.email);
         phone = (TextView) root.findViewById(R.id.phone);
@@ -82,48 +87,52 @@ public class ProfileFragment extends Fragment {
 
         if (!isNetworkAvailable()) {
             edit.setEnabled(false);
+            username.setText(name);
+            password.setText(pass);
+            email.setText(emai);
+            phone.setText(phon);
+
         } else {
             edit.setEnabled(true);
-        }
+            getUserConnectedArray();
 
-        getUserConnectedArray();
+            System.out.println(userConnected.getId());
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!editing) {
+                        username.setVisibility(View.GONE);
+                        password.setVisibility(View.GONE);
+                        email.setVisibility(View.GONE);
+                        phone.setVisibility(View.GONE);
+                        usernameEdit.setVisibility(View.VISIBLE);
+                        emailEdit.setVisibility(View.VISIBLE);
+                        passwordEdit.setVisibility(View.VISIBLE);
+                        phoneEdit.setVisibility(View.VISIBLE);
+                        edit.setText("Save");
+                        editing = true;
+                    } else {
+                        System.out.println("user id" + userConnected.getId());
+                        updateUser(getContext(), usernameEdit.getText().toString(),
+                                passwordEdit.getText().toString(),
+                                emailEdit.getText().toString(),
+                                userConnected.getId()+"",
+                                phoneEdit.getText().toString());
 
-        System.out.println(userConnected.getId());
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!editing) {
-                    username.setVisibility(View.GONE);
-                    password.setVisibility(View.GONE);
-                    email.setVisibility(View.GONE);
-                    phone.setVisibility(View.GONE);
-                    usernameEdit.setVisibility(View.VISIBLE);
-                    emailEdit.setVisibility(View.VISIBLE);
-                    passwordEdit.setVisibility(View.VISIBLE);
-                    phoneEdit.setVisibility(View.VISIBLE);
-                    edit.setText("Save");
-                    editing = true;
-                } else {
-                    System.out.println("user id" + userConnected.getId());
-                    updateUser(getContext(), usernameEdit.getText().toString(),
-                            passwordEdit.getText().toString(),
-                            emailEdit.getText().toString(),
-                            userConnected.getId()+"",
-                            phoneEdit.getText().toString());
-
-                    username.setVisibility(View.VISIBLE);
-                    password.setVisibility(View.VISIBLE);
-                    email.setVisibility(View.VISIBLE);
-                    phone.setVisibility(View.VISIBLE);
-                    usernameEdit.setVisibility(View.GONE);
-                    emailEdit.setVisibility(View.GONE);
-                    passwordEdit.setVisibility(View.GONE);
-                    phoneEdit.setVisibility(View.GONE);
-                    edit.setText("Edit");
-                    editing = false;
+                        username.setVisibility(View.VISIBLE);
+                        password.setVisibility(View.VISIBLE);
+                        email.setVisibility(View.VISIBLE);
+                        phone.setVisibility(View.VISIBLE);
+                        usernameEdit.setVisibility(View.GONE);
+                        emailEdit.setVisibility(View.GONE);
+                        passwordEdit.setVisibility(View.GONE);
+                        phoneEdit.setVisibility(View.GONE);
+                        edit.setText("Edit");
+                        editing = false;
+                    }
                 }
-            }
-        });
+            });
+        }
         return root;
     }
 
@@ -131,7 +140,7 @@ public class ProfileFragment extends Fragment {
 
                             userConnected = MainActivity.userConnected;
 
-                            usernameTitle.setText(userConnected.getUsername());
+                            //usernameTitle.setText(userConnected.getUsername());
                             username.setText(userConnected.getUsername());
                             usernameEdit.setText(userConnected.getUsername());
                             password.setText(userConnected.getPassword());
@@ -153,7 +162,7 @@ public class ProfileFragment extends Fragment {
                     public void onResponse(JSONObject response) {
                         Log.e("update resp", response.toString());
                         JSONObject jsonObject = response;
-                        usernameTitle.setText(usernamel);
+                        //usernameTitle.setText(usernamel);
                         username.setText(usernamel);
                         usernameEdit.setText(usernamel);
                         password.setText(passwordl);

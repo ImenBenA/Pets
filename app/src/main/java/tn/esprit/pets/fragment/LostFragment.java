@@ -1,13 +1,19 @@
 package tn.esprit.pets.fragment;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,14 +55,24 @@ public class LostFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_post, container, false);
         lost.clear();
-        for (Post p: MainActivity.listPost) {
-            if (p.getType().equals("lost")){
+        for (Post p : MainActivity.listPost) {
+            if (p.getType().equals("lost")) {
                 lost.add(p);
             }
         }
+
+        LinearLayout linearLayout = (LinearLayout) root.findViewById(R.id.message_layout);
+        TextView message = (TextView) root.findViewById(R.id.message);
+
         itemsAdapter = new PostsAdapter(root.getContext(), lost);
         ListView listView = (ListView) root.findViewById(R.id.posts);
         listView.setAdapter(itemsAdapter);
+        if (lost.size() == 0) {
+            linearLayout.setVisibility(View.VISIBLE);
+            message.setText("There are currently no lost posts");
+        } else {
+            linearLayout.setVisibility(View.GONE);
+        }
         return root;
     }
 

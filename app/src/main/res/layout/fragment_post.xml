@@ -9,7 +9,25 @@
     <ListView
         android:id="@+id/posts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"></ListView>
+
+    <LinearLayout
+        android:id="@+id/message_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_margin="20dp"
+            android:id="@+id/message"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="There are currently no posts, be the first one to add a post"/>
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

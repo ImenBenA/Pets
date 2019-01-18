@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
         userId = sharedPreferences.getInt("id", 0);
         String name = sharedPreferences.getString("username", "");
         String pass = sharedPreferences.getString("password", "");
+        String email = sharedPreferences.getString("email", "");
+        String phone = sharedPreferences.getString("phone", "");
+        System.out.print("credentials" + name + pass);
         //System.out.println(name + " and " + pass + " and id : "+userId);
         userConnected.setId(userId);
         getUserConnected(userId, name, pass);
@@ -154,10 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (!isNetworkAvailable()) {
-                            builder.show();
-                        }
-                        else
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new ProfileFragment()).commit();
                     }
                 };
@@ -175,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if (isNetworkAvailable())
+                            init(getApplicationContext());
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new MyPostsFragment()).commit();
                     }
                 };

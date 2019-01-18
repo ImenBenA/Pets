@@ -102,6 +102,7 @@ public class AddPostFragment extends Fragment {
                     imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
                     progress.show();
                     ps.addPost(getContext(), description, imageUrl, type, townString, petString,progress);
+                    MainActivity.init(getContext());
                     getFragmentManager().popBackStackImmediate();
                 }
                 else {

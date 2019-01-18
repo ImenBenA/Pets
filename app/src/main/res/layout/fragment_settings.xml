@@ -18,7 +18,7 @@
 
         <Switch
             android:layout_width="match_parent"
-            android:text="notifs"
+            android:textColor="@color/grey"
             android:id="@+id/notification_switch"
             android:layout_height="wrap_content" />
 

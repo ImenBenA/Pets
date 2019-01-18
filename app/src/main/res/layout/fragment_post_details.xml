@@ -36,9 +36,7 @@
                         android:id="@+id/type_image"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@drawable/tag_green"
-                        android:padding="10dp"
-                        android:src="@drawable/l" />
+                        android:padding="15dp" />
 
                     <TextView
                         android:id="@+id/type_text"
@@ -46,18 +44,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="8dp"
-                        android:text="post type"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <Button
+                <!--<Button
                     android:id="@+id/delete"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/trash" />
+                    android:background="@drawable/trash" />-->
             </RelativeLayout>
 
         </LinearLayout>
@@ -84,7 +81,6 @@
             android:layout_marginTop="10dp"
             android:padding="8dp"
             android:paddingStart="5dp"
-            android:text="description"
             android:textStyle="bold" />
 
 
@@ -95,12 +91,11 @@
             android:layout_gravity="start"
             android:gravity="center"
             android:padding="5dp"
-            android:text="2019-04-02"
             android:textColor="@android:color/darker_gray"
             android:textSize="10dp" />
 
         <Button
-            android:id="@+id/call"
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginBottom="20dp"
@@ -109,7 +104,6 @@
             android:fontFamily="sans-serif-medium"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
-            android:text="Call User"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"

@@ -80,7 +80,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:background="@drawable/cercleshape_pink"
-                        android:padding="10dp"
+                        android:padding="18dp"
                         android:src="@drawable/l" />
 
                     <TextView
@@ -125,7 +125,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:background="@drawable/cercleshape_green"
-                        android:padding="10dp"
+                        android:padding="18dp"
                         android:src="@drawable/f" />
 
                     <TextView

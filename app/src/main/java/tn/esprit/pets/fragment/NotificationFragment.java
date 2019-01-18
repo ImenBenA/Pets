@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -42,6 +43,7 @@ public class NotificationFragment extends Fragment {
     NotificationAdapter itemsAdapter;
 
     public void NotificationFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +52,15 @@ public class NotificationFragment extends Fragment {
         itemsAdapter = new NotificationAdapter(root.getContext(), (ArrayList<Notification>) notification);
         ListView listView = (ListView) root.findViewById(R.id.notification);
         listView.setAdapter(itemsAdapter);
+
+        TextView message = (TextView) root.findViewById(R.id.message);
+
+        if (notification.size()==0) {
+            message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.GONE);
+        }
+
         return root;
     }
 

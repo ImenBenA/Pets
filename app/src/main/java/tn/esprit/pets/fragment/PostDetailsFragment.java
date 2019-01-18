@@ -62,7 +62,7 @@ public class PostDetailsFragment extends Fragment {
     TextView description;
     TextView date;
     ImageView image;
-    Button call, delete;
+    Button button;
     ImageView type;
     TextView text;
     Post post;
@@ -91,30 +91,17 @@ public class PostDetailsFragment extends Fragment {
         date = (TextView) root.findViewById(R.id.post_date);
         date.setText(new SimpleDateFormat("dd MM yyyy").format(post.getDate()));
 
-        call = (Button) root.findViewById(R.id.call);
-        call.setText("Call " + post.getUser().getUsername().toString());
-        call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel:"+ post.getUser().getPhone()));
-                try {
-                    startActivity(callIntent);
-                } catch (SecurityException se) {
-                }
-            }
-        });
-
-        delete = (Button) root.findViewById(R.id.delete);
-
+        button = (Button) root.findViewById(R.id.button);
         if (MainActivity.userConnected.getId() == post.getUser().getId()) {
-            delete.setVisibility(View.VISIBLE);
+            //delete.setVisibility(View.VISIBLE);
+            button.setText("Delete this post");
+            button.setBackgroundResource(R.drawable.btn_bg_danger);
             if (!isNetworkAvailable()) {
-                delete.setEnabled(false);
+                button.setEnabled(false);
             } else {
-                delete.setEnabled(true);
+                button.setEnabled(true);
             }
-            delete.setOnClickListener(new View.OnClickListener() {
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -130,18 +117,32 @@ public class PostDetailsFragment extends Fragment {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            getActivity().getSupportFragmentManager().popBackStackImmediate();
                             deletePost(root.getContext(),idPost);
                             MainActivity.listPost.remove(post);
                             LostFragment.lost.remove(post);
                             FoundFragment.found.remove(post);
+                            MyPostsFragment.myPosts.remove(post);
+                            System.out.print("listaaaaa " + MyPostsFragment.myPosts.toString());
+                            MainActivity.init(getContext());
+                            getActivity().getSupportFragmentManager().popBackStackImmediate();
                         }
                     });
                     builder.show();
                 }
             });
         } else {
-            delete.setVisibility(View.INVISIBLE);
+            button.setText("Call " + post.getUser().getUsername().toString());
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:"+ post.getUser().getPhone()));
+                    try {
+                        startActivity(callIntent);
+                    } catch (SecurityException se) {
+                    }
+                }
+            });
         }
 
         type = (ImageView) root.findViewById(R.id.type_image);
