@@ -1,5 +1,6 @@
 package tn.esprit.pets.service;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -186,13 +187,13 @@ try {
 }
      */
 
-    public void addPost(final Context context, final String description, final String imageUrl, final String type, final String town, final String petType){
+    public void addPost(final Context context, final String description, final String imageUrl, final String type, final String town, final String petType, final ProgressDialog progress){
         String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                progress.dismiss();
                 //MainActivity.init(context);
 
             }

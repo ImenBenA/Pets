@@ -1,6 +1,9 @@
 package tn.esprit.pets.fragment;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -76,7 +79,15 @@ public class AddPostFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bitmap != null) {
+                ProgressDialog progress = new ProgressDialog(getContext());
+                progress.setTitle("Loading");
+                progress.setMessage("Wait while loading...");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setCancelable(true);
+                builder.setTitle("Warning");
+                builder.setMessage("Please insert an image and a description");
+                String description = etDescription.getText().toString();
+                if (bitmap != null && !description.equals("")) {
                     String radiovalue = ((RadioButton) root.findViewById(radioGroup.getCheckedRadioButtonId())).getText().toString();
                     String type = "";
                     if (radiovalue.equals("Looking for a pet"))
@@ -87,11 +98,21 @@ public class AddPostFragment extends Fragment {
                     String townString = townSpinner.getSelectedItem().toString();
                     String petString = petTypeSpinner.getSelectedItem().toString();
 
-                    String description = etDescription.getText().toString();
                     String imageUrl = getStringImage(bitmap);
                     imageUrl = imageUrl.replaceAll(System.getProperty("line.separator"), "");
-                    ps.addPost(getContext(), description, imageUrl, type, townString, petString);
+                    progress.show();
+                    ps.addPost(getContext(), description, imageUrl, type, townString, petString,progress);
                     getFragmentManager().popBackStackImmediate();
+                }
+                else {
+
+                    builder.setNegativeButton("Ok !", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
                 }
             }
         });

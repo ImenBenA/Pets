@@ -1,6 +1,8 @@
 package tn.esprit.pets.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -51,21 +53,36 @@ public class SignupFragment extends Fragment {
                 String pass = password.getText().toString();
                 String mail = email.getText().toString();
                 String phone = phoneNumber.getText().toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setCancelable(true);
+                builder.setTitle("Warning");
+                builder.setMessage("Make sure that :\n - Your username contains 5 letters at least" +
+                        "\n - Your password contains at least 1 digit " +
+                        "\n - Your email format is correct" +
+                        "\n - You inserted a phone correct phone number");
+                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 //TODO
-                //if (/*name.length()>5*/ && verifPassword(pass) && verifMail(mail) && verifPhoneNumber(phoneNumber){
+                if (name.length()>4 && verifPassword(pass) && verifMail(mail) && verifPhoneNumber(phone)){
                     addUser(root.getContext(), name, pass, mail, phone);
                     getFragmentManager().popBackStack();
-               // }
-                //else
-                   // System.out.println("verifier vos données");
+                }
+                else
+                   builder.show();
             }
         });
         return root;
     }
 
     public boolean verifPhoneNumber(String phoneNumber) {
-        //TODO
+        System.out.println("phone" +phoneNumber.length());
+        if (phoneNumber.length()==8)
         return true;
+        return false;
     }
 
     public boolean verifMail(String mail) {
@@ -96,7 +113,7 @@ public class SignupFragment extends Fragment {
                 //System.out.println("test 1 :" +test);
             }
         }
-        if(password.length()>5) {
+        if(password.length()>4) {
             test2=true;
             //System.out.println(test2);
         }

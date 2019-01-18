@@ -1,6 +1,8 @@
 package tn.esprit.pets.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -115,11 +117,27 @@ public class PostDetailsFragment extends Fragment {
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().getSupportFragmentManager().popBackStackImmediate();
-                    deletePost(root.getContext(),idPost);
-                    MainActivity.listPost.remove(post);
-                    LostFragment.lost.remove(post);
-                    FoundFragment.found.remove(post);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setCancelable(true);
+                    builder.setTitle("Confirmation");
+                    builder.setMessage("Are you sure you want to delete this post ?");
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().getSupportFragmentManager().popBackStackImmediate();
+                            deletePost(root.getContext(),idPost);
+                            MainActivity.listPost.remove(post);
+                            LostFragment.lost.remove(post);
+                            FoundFragment.found.remove(post);
+                        }
+                    });
+                    builder.show();
                 }
             });
         } else {
