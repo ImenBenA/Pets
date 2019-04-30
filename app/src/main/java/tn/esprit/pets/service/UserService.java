@@ -168,7 +168,7 @@ public class UserService {
     }
 
     public void addUser(Context context, final String username, final String password, final String email, final String phone) {
-        String Url = "http://" + MySingleton.getIp() + "/PetsWS/user/addUser.php";
+        String Url = "http://" + MySingleton.getIp() + "/pets/user/addUser.php";
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(

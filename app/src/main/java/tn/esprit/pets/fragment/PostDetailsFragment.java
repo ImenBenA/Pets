@@ -67,7 +67,7 @@ public class PostDetailsFragment extends Fragment {
     TextView text;
     Post post;
 
-    String deletePostURL = "http://" + MySingleton.getIp() + "/PetsWS/post/deletePost.php";
+    String deletePostURL = "http://" + MySingleton.getIp() + "/pets/post/deletePost.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

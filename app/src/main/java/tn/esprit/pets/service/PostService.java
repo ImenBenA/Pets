@@ -188,7 +188,7 @@ try {
      */
 
     public void addPost(final Context context, final String description, final String imageUrl, final String type, final String town, final String petType, final ProgressDialog progress){
-        String url="http://"+MySingleton.getIp()+"/PetsWS/post/addPost.php";
+        String url="http://"+MySingleton.getIp()+"/pets/post/addPost.php";
         RequestQueue queue = MySingleton.getInstance(context).getRequestQueue();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -200,7 +200,7 @@ try {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progress.dismiss();
             }
         }) {
             @Override
@@ -221,7 +221,7 @@ try {
                 return "application/json";
             }
         };
-        ;
+
         MySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 

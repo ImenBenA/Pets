@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
     public static List<Notification> listNotification = new ArrayList<>();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private String getUserURL = "http://"+MySingleton.getIp()+"/PetsWS/user/userById.php?id=";
-    private String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
-    private static String getAllPostsURL = "http://"+MySingleton.getIp()+"/PetsWS/post/allPosts.php";
-    private static String getAllNotificationsURL = "http://"+MySingleton.getIp()+"/PetsWS/notification/allNotification.php?id=";
+    private String getUserURL = "http://"+MySingleton.getIp()+"/pets/user/userById.php?id=";
+    private String updateUEL = "http://" + MySingleton.getIp() + "/pets/user/updateUser.php";
+    private static String getAllPostsURL = "http://"+MySingleton.getIp()+"/pets/post/allPosts.php";
+    private static String getAllNotificationsURL = "http://"+MySingleton.getIp()+"/pets/notification/allNotification.php?id=";
     int userId;
     GridLayout mainGrid;
     CardView lost, found, profile, settings, notifications, addPost, myPosts;
@@ -121,10 +121,14 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (isNetworkAvailable())
+                        if (isNetworkAvailable()){
                             init(getApplicationContext());
-                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
-                    }
+                            getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new LostFragment()).commit();
+
+                        }
+                        else
+                            builder.show();
+                            }
                 };
                 if (runnable != null) {
                     handler.post(runnable);
@@ -139,10 +143,13 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (isNetworkAvailable())
+                        if (isNetworkAvailable()){
                             init(getApplicationContext());
-                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new FoundFragment()).commit();
-                    }
+                            getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new FoundFragment()).commit();
+                        }
+                        else
+                            builder.show();
+                            }
                 };
                 if (runnable != null) {
                     handler.post(runnable);
@@ -174,10 +181,13 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if (isNetworkAvailable())
+                        if (isNetworkAvailable()){
                             init(getApplicationContext());
-                        getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new MyPostsFragment()).commit();
-                    }
+                            getSupportFragmentManager().beginTransaction().addToBackStack("fragment").replace(R.id.drawer_layout, new MyPostsFragment()).commit();
+                        }
+                        else
+                            builder.show();
+                         }
                 };
                 if (runnable != null) {
                     handler.post(runnable);
@@ -185,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        notifications = (CardView) findViewById(R.id.notifications);
+        /*notifications = (CardView) findViewById(R.id.notifications);
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                     handler.post(runnable);
                 }
             }
-        });
+        });*/
         settings = (CardView) findViewById(R.id.settings);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,11 +233,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         addPost = (CardView) findViewById(R.id.addPost);
-        if (!isNetworkAvailable()) {
-            addPost.setEnabled(false);
-        } else {
-            addPost.setEnabled(true);
-        }
         addPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if (!isNetworkAvailable()) {
+                            builder.show();
+                        }
+                        else
                         getSupportFragmentManager().beginTransaction().addToBackStack("fragment").add(R.id.drawer_layout, new AddPostFragment()).commit();
                     }
                 };
@@ -349,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void init(Context context){
         getPosts(context);
-        getNotifications(context);
+        //getNotifications(context);
     }
     public static void getPosts(Context context){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -369,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                                     int id = jsonObject.getInt("id");
                                     String description = jsonObject.getString("description");
                                     String imageUrl = jsonObject.getString("petImage");
-                                    String link ="http://"+MySingleton.getIp()+"/PetsWS/post/"+imageUrl;
+                                    String link ="http://"+MySingleton.getIp()+"/pets/post/"+imageUrl;
                                     //String type = jsonObject.getString("type");
                                     Utils utils = new Utils();
                                     String petTypeString = jsonObject.getString("petType");

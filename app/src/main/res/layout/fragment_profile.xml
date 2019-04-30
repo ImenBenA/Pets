@@ -7,6 +7,7 @@
     android:weightSum="5"
     tools:context=".fragment.ProfileFragment"
     android:background="@color/white"
+    android:clickable="true"
     android:orientation="vertical">
 
         <LinearLayout
