@@ -60,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title=" ";
             System.out.println("message : " +message);
         //JSONObject jsonObject = new JSONObject(message);
-            System.out.println("tahche");
+            //System.out.println("tahche");
         //id=jsonObject.getString("id");
         messageBody=message.get("body");
         title=message.get("title");
