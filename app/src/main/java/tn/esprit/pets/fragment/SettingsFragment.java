@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
     Switch notifications;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    String deleteUserURL = "http://" + MySingleton.getIp() + "/PetsWS/user/deleteUser.php";
+    String deleteUserURL = "http://" + MySingleton.getIp() + "/pets/user/deleteUser.php";
 
     public SettingsFragment() {
     }

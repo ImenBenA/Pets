@@ -23,7 +23,7 @@ import tn.esprit.pets.service.MySingleton;
 class MyFirebaseInstanceIDService extends com.google.firebase.iid.FirebaseInstanceIdService {
 
     private static final String TAG = "MyFirebaseIIDService";
-    String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
+    String updateUEL = "http://" + MySingleton.getIp() + "/pets/user/updateUser.php";
     @Override
     public void onTokenRefresh() {
 

@@ -1,5 +1,7 @@
 package tn.esprit.pets.activity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login, signup;
     boolean isConnected, isAuthentified;
     EditText username, password;
-    private String getAllURL = "http://"+MySingleton.getIp()+"/PetsWS/user/userByUsernamePassword.php";
+    private String getAllURL = "http://"+MySingleton.getIp()+"/pets/user/userByUsernamePassword.php";
     UserService userService = new UserService();
 
     Handler mHandler = new Handler();
@@ -54,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         super.onCreate(savedInstanceState);
         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         sharedPreferences = this.getSharedPreferences("userdata", MODE_PRIVATE);
@@ -77,9 +81,17 @@ public class LoginActivity extends AppCompatActivity {
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    progress.setTitle("Loading");
+                    progress.setMessage("Wait while loading...");
+
+                    builder.setCancelable(true);
+                    builder.setTitle("Warning");
+                    //builder.setMessage("Please verify you username and password");
                     final String lusername = username.getText().toString();
                     final String lpassword = password.getText().toString();
-                    isAuthentified(lusername, lpassword, intent);
+                    progress.show();
+                    isAuthentified(lusername, lpassword, intent , progress , builder);
                 }
             });
 
@@ -100,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void isAuthentified(final String username, final String password,final Intent intent) {
+    public void isAuthentified(final String username, final String password, final Intent intent, final ProgressDialog progress , final AlertDialog.Builder alert) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 getAllURL,
@@ -109,10 +121,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("json response", response.toString());
-
+                        progress.dismiss();
                         try {
-                            System.out.println(response.toString());
+                            //System.out.println(response.toString());
                             if(!response.toString().equals("{}")) {
+                                System.out.println("equal ok");
                                 JSONObject jsonObject = response;
                                 int id = Integer.parseInt(jsonObject.getString("id"));
                                 String lusername = jsonObject.getString("username");
@@ -137,8 +150,18 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                     startActivity(intent);
                                 }
+
+
+                            }
+                            else {
+                                System.out.println("Please verify your username and password");
+                                alert.setMessage("Please verify your username and password");
+                                alert.show();
                             }
                         } catch (JSONException e) {
+                            System.out.println("alert verify your username and password");
+                            alert.setMessage("Please verify your username and password");
+                            alert.show();
                             Log.e("Array exception", isAuthentified + "");
                             e.printStackTrace();
                         }
@@ -147,7 +170,10 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
                         Log.e("array error", error.toString());
+                        alert.setMessage("Please verify your connection");
+                        alert.show();
                     }
                 }
         ){

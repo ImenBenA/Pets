@@ -40,8 +40,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class ProfileFragment extends Fragment {
     View root;
     User userConnected;
-    String getURL = "http://" + MySingleton.getIp() + "/PetsWS/user/userById.php?id=";
-    String updateUEL = "http://" + MySingleton.getIp() + "/PetsWS/user/updateUser.php";
+    String getURL = "http://" + MySingleton.getIp() + "/pets/user/userById.php?id=";
+    String updateUEL = "http://" + MySingleton.getIp() + "/pets/user/updateUser.php";
     TextView username, password, email, phone;
     EditText usernameEdit, passwordEdit, emailEdit, usernameTitleEdit, phoneEdit;
     ImageView picture;
