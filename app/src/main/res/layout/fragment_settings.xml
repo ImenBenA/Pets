@@ -18,6 +18,7 @@
         android:layout_marginBottom="40dp">
 
         <Switch
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:textColor="@color/grey"
             android:id="@+id/notification_switch"
