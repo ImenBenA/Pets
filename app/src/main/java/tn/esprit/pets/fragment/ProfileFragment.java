@@ -101,13 +101,13 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (!editing) {
-                        username.setVisibility(View.GONE);
-                        password.setVisibility(View.GONE);
+                        //username.setVisibility(View.GONE);
+                        //password.setVisibility(View.GONE);
                         email.setVisibility(View.GONE);
                         phone.setVisibility(View.GONE);
-                        usernameEdit.setVisibility(View.VISIBLE);
+                        //usernameEdit.setVisibility(View.VISIBLE);
                         emailEdit.setVisibility(View.VISIBLE);
-                        passwordEdit.setVisibility(View.VISIBLE);
+                        //passwordEdit.setVisibility(View.VISIBLE);
                         phoneEdit.setVisibility(View.VISIBLE);
                         edit.setText("Save");
                         editing = true;
@@ -120,12 +120,12 @@ public class ProfileFragment extends Fragment {
                                 phoneEdit.getText().toString());
 
                         username.setVisibility(View.VISIBLE);
-                        password.setVisibility(View.VISIBLE);
+                        //password.setVisibility(View.VISIBLE);
                         email.setVisibility(View.VISIBLE);
                         phone.setVisibility(View.VISIBLE);
-                        usernameEdit.setVisibility(View.GONE);
+                        //usernameEdit.setVisibility(View.GONE);
                         emailEdit.setVisibility(View.GONE);
-                        passwordEdit.setVisibility(View.GONE);
+                        //passwordEdit.setVisibility(View.GONE);
                         phoneEdit.setVisibility(View.GONE);
                         edit.setText("Edit");
                         editing = false;
